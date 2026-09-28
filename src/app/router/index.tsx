@@ -1,18 +1,23 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import DashboardLayout from "../layouts/DashboardLayout.tsx";
+import { loginAction } from "../../features/auth/LoginAction.ts";
+
+import LoginPage from "../../features/auth/Login.tsx";
+import DashboardPage from "../../features/dashboard/Dashboard.tsx";
 
 export const router = createBrowserRouter([
   {
     path: "/login",
-    element: <div>Login Page</div>,
+    element: <LoginPage />,
+    action: loginAction,
   },
   {
     element: <DashboardLayout />,
     children: [
       {
         index: true,
-        element: <div>Dashboard Home</div>,
+        element: <DashboardPage />,
       },
       {
         path: "employees",
