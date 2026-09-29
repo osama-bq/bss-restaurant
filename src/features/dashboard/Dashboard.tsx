@@ -1,10 +1,17 @@
-import { useAppSelector } from "../../app/store/hooks";
+import { useGetDashboardStatsQuery } from "../../api/dashboard.api";
 
 export default function DashboardPage() {
-  const { data, loaded } = useAppSelector((state) => state.dashboard);
+  const { data, isLoading, error } = useGetDashboardStatsQuery({
+    month: String(new Date().getMonth() + 1),
+    year: String(new Date().getFullYear()),
+  });
 
-  if (!loaded) {
+  if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Failed to load dashboard data.</div>;
   }
 
   return <div>{JSON.stringify(data)}</div>;

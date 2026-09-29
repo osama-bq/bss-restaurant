@@ -1,18 +1,31 @@
-import { apiClient } from "./client";
+import { baseApi } from "./baseApi";
 import type { Employee } from "../features/employees/type";
 
 export interface SearchRequest {
-    Search?: string;
-    Sort?: string;
-    Page: number;
-    Per_Page: number;
+  Search?: string;
+  Sort?: string;
+  Page: number;
+  Per_Page: number;
 }
 
 export interface EmployeesResponse {
-    data: Employee[]
+  data: Employee[];
 }
 
+export const employeesApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getEmployees: builder.query<EmployeesResponse, SearchRequest>({
+      query: ({ Search, Sort, Page, Per_Page }) => ({
+        url: "/api/Employee/datatable",
+        params: {
+          Sort: Sort || "",
+          Search: Search || "",
+          Page,
+          Per_Page,
+        },
+      }),
+    }),
+  }),
+});
 
-export function getEmployees(data: SearchRequest): Promise<EmployeesResponse> {
-    return apiClient("/api/Employee/datatable" + `?Sort=${data.Sort || ""}${data.Search? "&Search=" + data.Search : ""}&Page=${data.Page}&Per_Page=${data.Per_Page}`, {}, true);
-}
+export const { useGetEmployeesQuery } = employeesApi;

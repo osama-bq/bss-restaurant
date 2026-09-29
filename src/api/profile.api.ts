@@ -1,10 +1,14 @@
-import { apiClient } from "./client";
+import { baseApi } from "./baseApi";
 import type { User } from "../features/auth/type";
 
-export function getProfile(): Promise<User> {
-    return apiClient("/api/Auth/profile", {
-        headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-        }
-    });
-}
+export const profileApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getProfile: builder.query<User, void>({
+      query: () => ({
+        url: "/api/Auth/profile",
+      }),
+    }),
+  }),
+});
+
+export const { useGetProfileQuery } = profileApi;

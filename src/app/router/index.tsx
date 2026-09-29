@@ -7,7 +7,6 @@ import LoginPage from "../../features/auth/Login.tsx";
 import DashboardPage from "../../features/dashboard/Dashboard.tsx";
 import protectedRouteLoader from "./ProtectedRouteLoader.ts";
 import EmployeesPage from "../../features/employees/Employees.tsx";
-import { dashboardLoader } from "../../features/dashboard/DashboardLoader.ts";
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +21,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <DashboardPage />,
-        loader: dashboardLoader,
       },
       {
         path: "employees",

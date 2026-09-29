@@ -2,7 +2,7 @@ import { RouterProvider } from "react-router-dom";
 
 import { router } from "./app/router/index.tsx";
 import { Provider } from "react-redux";
-import { store } from "./app/store/store.ts";
+import { store } from "./app/store.ts";
 
 function App() {
   return (

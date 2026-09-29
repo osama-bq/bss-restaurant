@@ -1,4 +1,4 @@
-import { store } from "../../app/store/store.ts";
+import { store } from "../../app/store.ts";
 import { getEmployees } from "../../api/employees.api.ts";
 import { setEmployeesData, setEmployeesLoaded } from "../../app/store/employees";
 

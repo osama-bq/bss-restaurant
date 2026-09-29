@@ -1,26 +1,31 @@
-import { apiClient } from "./client";
+import { baseApi } from "./baseApi";
 
 export interface LoginRequest {
-    userName: string;
-    password: string;
+  userName: string;
+  password: string;
 }
 
 export interface LoginResponse {
-    refreshToken: string;
-    refreshTokenExpiryTime: string;
-    token: string;
-    user: {
-        email: string;
-        fullName: string;
-        id: string;
-        phoneNumber: string;
-        userName: string;
-    };
+  refreshToken: string;
+  refreshTokenExpiryTime: string;
+  token: string;
+  user: {
+    email: string;
+    fullName: string;
+    id: string;
+    phoneNumber: string;
+    userName: string;
+  };
 }
 
-export function login(data: LoginRequest): Promise<LoginResponse> {
-    return apiClient("/api/Auth/signIn", {
+export const authApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    login: builder.mutation<LoginResponse, LoginRequest>({
+      query: (data) => ({
+        url: "/api/Auth/SignIn",
         method: "POST",
-        body: JSON.stringify(data)
-    });
-}
+        body: data,
+      }),
+    }),
+  }),
+});
