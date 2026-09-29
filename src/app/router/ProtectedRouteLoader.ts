@@ -1,8 +1,9 @@
 import { redirect } from "react-router-dom";
-import { getProfile, type ProfileResponse } from "../../api/profile.api";
+import { getProfile } from "../../api/profile.api";
 import { getAccessToken } from "../../api/refreshToken.api";
+import type { User } from "../../features/auth/type";
 
-async function validateToken(): Promise<ProfileResponse | null> {
+async function validateToken(): Promise<User | null> {
     try {
         const profile = await getProfile();
         return profile;
