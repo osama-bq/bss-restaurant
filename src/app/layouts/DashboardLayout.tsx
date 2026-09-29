@@ -19,7 +19,14 @@ import {
 
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Outlet, useLocation, Link, NavLink } from "react-router-dom";
+import {
+  Outlet,
+  useLocation,
+  Link,
+  NavLink,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import { useState } from "react";
 
 import logo from "../../assets/logo.png";
@@ -42,6 +49,12 @@ function getTitleFromPathname(pathname: string): string {
       return "Employees";
     case "/foods":
       return "Foods";
+    case "/tables":
+      return "Tables";
+    case "/orders":
+      return "Orders";
+    case "/orders/new":
+      return "New Order";
     default:
       return "Dashboard";
   }
@@ -79,7 +92,9 @@ const MiniSidebar = styled(Drawer, {
 }));
 
 export default function DashboardLayout() {
+  const profile = useLoaderData();
   const location = useLocation();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -97,6 +112,13 @@ export default function DashboardLayout() {
 
   function handleMenuClose() {
     setAnchorEl(null);
+  }
+
+  function performLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshTokenExpiryTime");
+    navigate("/login");
   }
 
   return (
@@ -119,10 +141,7 @@ export default function DashboardLayout() {
           <Box sx={{ ml: "auto" }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Profile Avatar"
-                  src="https://cdn.vectorstock.com/i/1000v/01/38/young-man-profile-vector-14770138.jpg"
-                />
+                <Avatar alt="Profile Avatar" src={profile.image} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -137,7 +156,7 @@ export default function DashboardLayout() {
                 <ListItemText primary="Profile" />
               </MenuItem>
 
-              <MenuItem>
+              <MenuItem onClick={performLogout}>
                 <ListItemIcon>
                   <LogoutIcon fontSize="small" />
                 </ListItemIcon>

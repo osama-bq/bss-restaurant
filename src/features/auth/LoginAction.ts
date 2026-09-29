@@ -9,6 +9,8 @@ export async function loginAction({ request }: { request: Request }) {
   try {
     const data = await login({ userName, password });
     localStorage.setItem("token", data.token);
+    localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("refreshTokenExpiryTime", data.refreshTokenExpiryTime);
     return redirect("/");
   } catch (error) {
     console.error("Login failed:", error);

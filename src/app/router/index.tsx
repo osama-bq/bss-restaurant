@@ -5,6 +5,9 @@ import { loginAction } from "../../features/auth/LoginAction.ts";
 
 import LoginPage from "../../features/auth/Login.tsx";
 import DashboardPage from "../../features/dashboard/Dashboard.tsx";
+import protectedRouteLoader from "./ProtectedRouteLoader.ts";
+import EmployeesPage from "../../features/employees/Employees.tsx";
+import { dashboardLoader } from "../../features/dashboard/DashboardLoader.ts";
 
 export const router = createBrowserRouter([
   {
@@ -13,15 +16,17 @@ export const router = createBrowserRouter([
     action: loginAction,
   },
   {
+    loader: protectedRouteLoader,
     element: <DashboardLayout />,
     children: [
       {
         index: true,
         element: <DashboardPage />,
+        loader: dashboardLoader,
       },
       {
         path: "employees",
-        element: <div>Employees</div>,
+        element: <EmployeesPage />,
       },
       {
         path: "tables",
@@ -29,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "foods",
-        element: <div>Tables</div>,
+        element: <div>Foods</div>,
       },
       {
         path: "orders",

@@ -40,9 +40,5 @@ export interface DashboardStatsResponse {
 }
 
 export function getDashboardStats(data: StatsTimeRequest): Promise<DashboardStatsResponse> {
-    return apiClient("/api/Dashboard/stats" + `?Month=${data.month}&Year=${data.year}`, {
-        headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-        }
-    });
+    return apiClient("/api/Dashboard/stats" + `?Month=${data.month}&Year=${data.year}`, {}, true);
 }
