@@ -5,5 +5,5 @@ export type Employee = {
   designation: string;
   joinDate: string;
   amountSold: number;
-  user: User[];
+  user: User;
 };
