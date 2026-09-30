@@ -1,20 +1,13 @@
 import { baseApi } from "./baseApi";
 import type { Employee } from "../features/employees/type";
-
-export interface SearchRequest {
-  Search?: string;
-  Sort?: string;
-  Page: number;
-  Per_Page: number;
-}
-
-export interface EmployeesResponse {
-  data: Employee[];
-}
+import type { PaginationRequest, PaginationResponse } from "./types";
 
 export const employeesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getEmployees: builder.query<EmployeesResponse, SearchRequest>({
+    getEmployees: builder.query<
+      PaginationResponse<Employee>,
+      PaginationRequest
+    >({
       query: ({ Search, Sort, Page, Per_Page }) => ({
         url: "/api/Employee/datatable",
         params: {

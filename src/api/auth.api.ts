@@ -25,6 +25,7 @@ export const authApi = baseApi.injectEndpoints({
         url: "/api/Auth/SignIn",
         method: "POST",
         body: data,
+        skipAuth: true,
       }),
     }),
   }),
