@@ -31,9 +31,6 @@ export default function RestaurantTableCard({
   onDelete,
   onAssignEmployee,
 }: Props) {
-  const status = table.isOccupied ? "Occupied" : "Available";
-
-  console.log(table.image);
   return (
     <Card
       variant="outlined"
