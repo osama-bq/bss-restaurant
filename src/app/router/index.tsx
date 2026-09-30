@@ -8,6 +8,7 @@ import DashboardPage from "../../features/dashboard/Dashboard.tsx";
 import protectedRouteLoader from "./ProtectedRouteLoader.ts";
 import EmployeesPage from "../../features/employees/Employees.tsx";
 import TablesPage from "../../features/tables/Tables.tsx";
+import FoodsPage from "../../features/foods/Foods.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "foods",
-        element: <div>Foods</div>,
+        element: <FoodsPage />,
       },
       {
         path: "orders",
