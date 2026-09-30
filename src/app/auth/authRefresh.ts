@@ -1,4 +1,4 @@
-const BASE_URL = "https://bssrms.runasp.net";
+import { BASE_URL } from "../../api/baseApi";
 
 export type RefreshResponse = {
   accessToken: string;

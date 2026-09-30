@@ -8,7 +8,7 @@ import {
 
 import { clearSession, refreshAccessToken } from "../app/auth/authRefresh";
 
-const BASE_URL = "https://bssrms.runasp.net";
+export const BASE_URL = "https://bssrms.runasp.net";
 
 /**
  * Extra option that can be supplied to an individual request.

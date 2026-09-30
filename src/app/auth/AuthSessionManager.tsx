@@ -7,13 +7,13 @@ type JwtPayload = {
   exp?: number;
 };
 
-/**
+/*
  * Decode the payload of a JWT.
  *
  * This is NOT verifying the token.
  * The backend is responsible for verifying the JWT signature.
  *
- * We only use exp to decide when to attempt a refresh.
+ * Only the exp is used to decide when to attempt a refresh.
  */
 function getTokenExpiry(token: string): number | null {
   try {
