@@ -1,6 +1,7 @@
 import {
   Avatar,
   IconButton,
+  Link,
   Stack,
   TableCell,
   TableRow,
@@ -8,6 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import { DeleteOutlined, EditOutlined } from "@mui/icons-material";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
 import type { Employee } from "../type";
 
 type Props = {
@@ -45,11 +48,37 @@ export default function EmployeeTableRow({ employee }: Props) {
       </TableCell>
 
       <TableCell>
-        <Typography variant="body2">{user.email}</Typography>
+        <Stack spacing={0.7} sx={{ alignItems: "flex-start" }}>
+          <Link
+            href={`mailto:${user.email}`}
+            variant="body2"
+            underline="hover"
+            color="inherit"
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 0.7,
+            }}
+          >
+            <EmailIcon fontSize="small" />
+            {user.email}
+          </Link>
 
-        <Typography variant="caption" color="text.secondary">
-          {user.phoneNumber}
-        </Typography>
+          <Link
+            href={`tel:${user.phoneNumber}`}
+            variant="caption"
+            underline="hover"
+            color="inherit"
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 0.7,
+            }}
+          >
+            <PhoneIcon fontSize="small" />
+            {user.phoneNumber}
+          </Link>
+        </Stack>
       </TableCell>
 
       <TableCell>
