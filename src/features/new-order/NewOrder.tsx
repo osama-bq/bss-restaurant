@@ -3,6 +3,7 @@ import { Stack } from "@mui/material";
 import { useGetTablesQuery } from "../../api/tables.api";
 import type { Table } from "../tables/types";
 import TableSelector from "./components/TableSelector";
+import EmptyTableState from "./components/EmptyTableState";
 
 const TABLES_PER_PAGE = 50; // fetch all
 
@@ -53,6 +54,15 @@ export default function NewOrderPage() {
               error={tablesError}
               onSelect={handleSelectTable}
             />
+          </Stack>
+
+          <Stack
+            sx={{
+              minWidth: 0,
+              flexGrow: 1,
+            }}
+          >
+            {selectedTableId ? <></> : <EmptyTableState />}
           </Stack>
         </Stack>
       </Stack>
