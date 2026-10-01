@@ -12,7 +12,7 @@ const statuses: {
   { value: 0, label: "Pending", defaultExpanded: true },
   { value: 1, label: "Confirmed", defaultExpanded: true },
   { value: 2, label: "Preparing", defaultExpanded: true },
-  { value: 3, label: "Prepared to Serve", defaultExpanded: true },
+  { value: 3, label: "PreparedToServe", defaultExpanded: true },
   { value: 4, label: "Served", defaultExpanded: false },
   { value: 5, label: "Paid", defaultExpanded: false },
 ];

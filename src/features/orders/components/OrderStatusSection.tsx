@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useGetOrdersQuery } from "../../../api/orders.api";
 import OrderCard from "./OrderCard";
 import type { Order, OrderStatus, OrderStatusValue } from "../types";
+import { statusPalette } from "../consts";
 
 const PER_PAGE = 5;
 
@@ -26,15 +27,6 @@ type Props = {
   onEdit: (order: Order) => void;
   onDelete: (order: Order) => void;
 };
-
-const statusColor = {
-  Pending: "warning",
-  Confirmed: "info",
-  Preparing: "primary",
-  "Prepared to Serve": "secondary",
-  Served: "success",
-  Paid: "default",
-} as const;
 
 export default function OrderStatusSection({
   status,
@@ -107,8 +99,11 @@ export default function OrderStatusSection({
             <Chip
               size="small"
               label={total}
-              color={statusColor[label]}
               variant="outlined"
+              sx={{
+                color: `${statusPalette[label]}.main`,
+                borderColor: `${statusPalette[label]}.main`,
+              }}
             />
           )}
         </Stack>

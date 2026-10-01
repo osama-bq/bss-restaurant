@@ -1,6 +1,5 @@
 import {
   AccessTimeOutlined,
-  ExpandMore,
   PersonOutlined,
   TableRestaurantOutlined,
 } from "@mui/icons-material";
@@ -57,78 +56,97 @@ export default function OrderCard({
         },
       }}
     >
-      <AccordionSummary expandIcon={<ExpandMore />}>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        sx={{
+          alignItems: { xs: "stretch", sm: "center" },
+        }}
+      >
+        <AccordionSummary>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={{ xs: 1, sm: 2 }}
+            sx={{
+              width: "100%",
+              alignItems: { xs: "stretch", sm: "center" },
+            }}
+          >
+            <Stack sx={{ minWidth: 130 }}>
+              <Typography sx={{ fontWeight: 700 }}>
+                #{order.orderNumber}
+              </Typography>
+
+              <Typography variant="body2" color="text.secondary">
+                {itemCount} {itemCount === 1 ? "item" : "items"}
+              </Typography>
+            </Stack>
+
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                flexGrow: 1,
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <Stack
+                direction="row"
+                spacing={0.75}
+                sx={{ alignItems: "center" }}
+              >
+                <TableRestaurantOutlined fontSize="small" color="action" />
+                <Typography variant="body2">
+                  Table {order.table.tableNumber}
+                </Typography>
+              </Stack>
+
+              <Stack
+                direction="row"
+                spacing={0.75}
+                sx={{ alignItems: "center" }}
+              >
+                <PersonOutlined fontSize="small" color="action" />
+                <Typography variant="body2">{customer}</Typography>
+              </Stack>
+
+              <Stack
+                direction="row"
+                spacing={0.75}
+                sx={{ alignItems: "center" }}
+              >
+                <AccessTimeOutlined fontSize="small" color="action" />
+                <Typography variant="body2" color="text.secondary">
+                  {orderTime}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Stack>
+        </AccordionSummary>
+
         <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={{ xs: 1, sm: 2 }}
+          spacing={1}
           sx={{
-            width: "100%",
-            alignItems: { xs: "stretch", sm: "center" },
+            alignItems: "center",
+            py: 2,
           }}
         >
-          <Stack sx={{ minWidth: 130 }}>
-            <Typography sx={{ fontWeight: 700 }}>
-              #{order.orderNumber}
-            </Typography>
-
-            <Typography variant="body2" color="text.secondary">
-              {itemCount} {itemCount === 1 ? "item" : "items"}
-            </Typography>
-          </Stack>
-
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              flexGrow: 1,
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 700, whiteSpace: "nowrap" }}
           >
-            <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
-              <TableRestaurantOutlined fontSize="small" color="action" />
-              <Typography variant="body2">
-                Table {order.table.tableNumber}
-              </Typography>
-            </Stack>
+            ৳{order.amount}
+          </Typography>
 
-            <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
-              <PersonOutlined fontSize="small" color="action" />
-              <Typography variant="body2">{customer}</Typography>
-            </Stack>
-
-            <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
-              <AccessTimeOutlined fontSize="small" color="action" />
-              <Typography variant="body2" color="text.secondary">
-                {orderTime}
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <Stack
-            spacing={1}
-            sx={{
-              alignItems: "center",
-              ml: { sm: "auto" },
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, whiteSpace: "nowrap" }}
-            >
-              ৳{order.amount}
-            </Typography>
-
-            <OrderActions
-              order={order}
-              onAdvanceStatus={onAdvanceStatus}
-              onChangeStatus={onChangeStatus}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
-          </Stack>
+          <OrderActions
+            order={order}
+            onAdvanceStatus={onAdvanceStatus}
+            onChangeStatus={onChangeStatus}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         </Stack>
-      </AccordionSummary>
+      </Stack>
 
       <AccordionDetails sx={{ pt: 0 }}>
         <Divider sx={{ mb: 2 }} />

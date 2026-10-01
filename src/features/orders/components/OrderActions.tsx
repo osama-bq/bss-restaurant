@@ -15,13 +15,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { type Order, type OrderStatus, type OrderStatusValue } from "../types";
 import {
   NEXT_ORDER_STATUS,
   ORDER_STATUS_VALUES,
-  type Order,
-  type OrderStatus,
-  type OrderStatusValue,
-} from "../types";
+  statusPalette,
+} from "../consts";
 
 const statuses: OrderStatus[] = [
   "Pending",
@@ -72,12 +71,13 @@ export default function OrderActions({
           <Button
             size="small"
             variant="contained"
-            onClick={(event) => {
-              event.stopPropagation();
-
+            onClick={() => {
               onAdvanceStatus(order, ORDER_STATUS_VALUES[nextStatus]);
             }}
-            sx={{ whiteSpace: "nowrap" }}
+            sx={{
+              whiteSpace: "nowrap",
+              backgroundColor: `${statusPalette[nextStatus]}.main`,
+            }}
           >
             {nextStatus === "Confirmed"
               ? "Confirm Order"
@@ -88,7 +88,6 @@ export default function OrderActions({
         <IconButton
           size="small"
           onClick={(event) => {
-            event.stopPropagation();
             setAnchorEl(event.currentTarget);
           }}
         >
@@ -114,7 +113,9 @@ export default function OrderActions({
         </MenuItem>
 
         <MenuItem
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
+
             setAnchorEl(null);
             setDeleteDialogOpen(true);
           }}
@@ -160,7 +161,9 @@ export default function OrderActions({
 
           <Button
             variant="contained"
-            onClick={() => {
+            onClick={(event) => {
+              event.stopPropagation();
+
               onChangeStatus(order, selectedStatus);
               setStatusDialogOpen(false);
             }}
