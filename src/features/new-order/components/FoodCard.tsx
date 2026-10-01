@@ -75,7 +75,25 @@ export default function FoodCard({ food, quantity, onAdd, onDecrease }: Props) {
             mt: "auto",
           }}
         >
-          <Typography sx={{ fontWeight: 700 }}>৳{food.price}</Typography>
+          {food.discountType === "None" ? (
+            <Typography sx={{ fontWeight: 700 }}>৳{food.price}</Typography>
+          ) : (
+            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+              <Typography sx={{ fontWeight: 700, color: "error.main" }}>
+                ৳{food.discountPrice}
+              </Typography>
+
+              <Typography
+                variant="body2"
+                sx={{
+                  textDecoration: "line-through",
+                  color: "text.secondary",
+                }}
+              >
+                ৳{food.price}
+              </Typography>
+            </Stack>
+          )}
 
           {quantity === 0 ? (
             <Button
