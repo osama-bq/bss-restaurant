@@ -1,4 +1,9 @@
-import { DeleteOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  MoreVert,
+  PublishedWithChanges,
+} from "@mui/icons-material";
 import {
   Button,
   Dialog,
@@ -100,7 +105,10 @@ export default function OrderActions({
         open={openMenu}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem onClick={handleOpenStatusDialog}>Change Status</MenuItem>
+        <MenuItem onClick={handleOpenStatusDialog}>
+          <PublishedWithChanges fontSize="small" sx={{ mr: 1 }} />
+          Change Status
+        </MenuItem>
 
         <MenuItem
           onClick={() => {
@@ -113,9 +121,7 @@ export default function OrderActions({
         </MenuItem>
 
         <MenuItem
-          onClick={(event) => {
-            event.stopPropagation();
-
+          onClick={() => {
             setAnchorEl(null);
             setDeleteDialogOpen(true);
           }}
@@ -161,9 +167,7 @@ export default function OrderActions({
 
           <Button
             variant="contained"
-            onClick={(event) => {
-              event.stopPropagation();
-
+            onClick={() => {
               onChangeStatus(order, selectedStatus);
               setStatusDialogOpen(false);
             }}
