@@ -4,6 +4,7 @@ import {
   ButtonBase,
   Card,
   Chip,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -21,9 +22,37 @@ type Props = {
 export default function TableSelector({
   tables,
   selectedTableId,
+  isLoading,
   error,
   onSelect,
 }: Props) {
+  if (isLoading) {
+    return (
+      <Stack
+        direction={{ xs: "row", md: "column" }}
+        spacing={1.5}
+        sx={{
+          overflowX: { xs: "auto", md: "visible" },
+          pb: { xs: 1, md: 0 },
+          px: { xs: 1, md: 2 },
+        }}
+      >
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton
+            key={index}
+            variant="rounded"
+            sx={{
+              width: { xs: 150, md: "100%" },
+              minWidth: { xs: 150, md: 0 },
+              height: 86,
+              flexShrink: 0,
+            }}
+          />
+        ))}
+      </Stack>
+    );
+  }
+
   if (error) {
     return <Typography color="error">Failed to load tables.</Typography>;
   }
