@@ -45,7 +45,7 @@ export type OrderStatus =
   | "Pending"
   | "Confirmed"
   | "Preparing"
-  | "Prepared to Serve"
+  | "PreparedToServe"
   | "Served"
   | "Paid";
 
@@ -55,7 +55,7 @@ export const ORDER_STATUS_VALUES: Record<OrderStatus, OrderStatusValue> = {
   Pending: 0,
   Confirmed: 1,
   Preparing: 2,
-  "Prepared to Serve": 3,
+  PreparedToServe: 3,
   Served: 4,
   Paid: 5,
 };
@@ -63,7 +63,7 @@ export const ORDER_STATUS_VALUES: Record<OrderStatus, OrderStatusValue> = {
 export const NEXT_ORDER_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
   Pending: "Confirmed",
   Confirmed: "Preparing",
-  Preparing: "Prepared to Serve",
-  "Prepared to Serve": "Served",
+  Preparing: "PreparedToServe",
+  PreparedToServe: "Served",
   Served: "Paid",
 };

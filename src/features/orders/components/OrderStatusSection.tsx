@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { useGetOrdersQuery } from "../../../api/orders.api";
 import OrderCard from "./OrderCard";
-import type { OrderStatus } from "../types";
+import type { Order, OrderStatus, OrderStatusValue } from "../types";
 
 const PER_PAGE = 5;
 
@@ -21,6 +21,10 @@ type Props = {
   label: OrderStatus;
   search: string;
   defaultExpanded: boolean;
+  onAdvanceStatus: (order: Order, status: OrderStatusValue) => void;
+  onChangeStatus: (order: Order, status: OrderStatusValue) => void;
+  onEdit: (order: Order) => void;
+  onDelete: (order: Order) => void;
 };
 
 const statusColor = {
@@ -37,6 +41,10 @@ export default function OrderStatusSection({
   label,
   search,
   defaultExpanded,
+  onAdvanceStatus,
+  onChangeStatus,
+  onEdit,
+  onDelete,
 }: Props) {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [page, setPage] = useState(1);
@@ -127,7 +135,14 @@ export default function OrderStatusSection({
         ) : (
           <Stack spacing={1.5}>
             {orders.map((order) => (
-              <OrderCard key={order.id} order={order} />
+              <OrderCard
+                key={order.id}
+                order={order}
+                onAdvanceStatus={onAdvanceStatus}
+                onChangeStatus={onChangeStatus}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
             ))}
 
             {lastPage > 1 && (

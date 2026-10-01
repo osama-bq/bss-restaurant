@@ -13,13 +13,24 @@ import {
   Typography,
 } from "@mui/material";
 import OrderItems from "./OrderItems";
-import type { Order } from "../types";
+import type { Order, OrderStatusValue } from "../types";
+import OrderActions from "./OrderActions";
 
 type Props = {
   order: Order;
+  onAdvanceStatus: (order: Order, status: OrderStatusValue) => void;
+  onChangeStatus: (order: Order, status: OrderStatusValue) => void;
+  onEdit: (order: Order) => void;
+  onDelete: (order: Order) => void;
 };
 
-export default function OrderCard({ order }: Props) {
+export default function OrderCard({
+  order,
+  onAdvanceStatus,
+  onChangeStatus,
+  onEdit,
+  onDelete,
+}: Props) {
   const customer =
     order.orderedBy?.fullName ||
     order.orderedBy?.userName ||
@@ -94,15 +105,28 @@ export default function OrderCard({ order }: Props) {
             </Stack>
           </Stack>
 
-          <Typography
+          <Stack
+            spacing={1}
             sx={{
-              fontWeight: 700,
-              whiteSpace: "nowrap",
-              mr: 1,
+              alignItems: "center",
+              ml: { sm: "auto" },
             }}
           >
-            ৳{order.amount}
-          </Typography>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, whiteSpace: "nowrap" }}
+            >
+              ৳{order.amount}
+            </Typography>
+
+            <OrderActions
+              order={order}
+              onAdvanceStatus={onAdvanceStatus}
+              onChangeStatus={onChangeStatus}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          </Stack>
         </Stack>
       </AccordionSummary>
 

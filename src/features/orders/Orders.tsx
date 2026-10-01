@@ -32,6 +32,10 @@ export default function Orders() {
             label={status.label}
             search={search}
             defaultExpanded={status.defaultExpanded}
+            onAdvanceStatus={() => {}}
+            onChangeStatus={() => {}}
+            onEdit={() => {}}
+            onDelete={() => {}}
           />
         ))}
       </Stack>
