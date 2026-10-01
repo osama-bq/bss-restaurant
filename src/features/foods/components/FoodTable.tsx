@@ -102,13 +102,7 @@ export default function FoodTable({
   }
 
   return (
-    <TableContainer
-      component={Paper}
-      variant="outlined"
-      sx={{
-        overflow: "hidden",
-      }}
-    >
+    <TableContainer component={Paper} variant="outlined">
       <Table>
         <TableHead>
           <TableRow

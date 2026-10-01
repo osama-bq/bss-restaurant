@@ -23,8 +23,6 @@ export default function TablesPage() {
   const tables = response?.data ?? [];
   const lastPage = response?.last_page ?? 1;
 
-  console.log(tables);
-
   return (
     <Stack spacing={3}>
       <TableToolbar
