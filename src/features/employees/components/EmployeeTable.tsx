@@ -11,14 +11,21 @@ import {
 } from "@mui/material";
 import type { Employee } from "../type";
 import EmployeeTableRow from "./EmployeeTableRow";
+import LoadingOverlay from "../../../components/LodingOverlay";
 
 type Props = {
   employees: Employee[];
   isLoading: boolean;
+  isFetching: boolean;
   error: unknown;
 };
 
-export default function EmployeeTable({ employees, isLoading, error }: Props) {
+export default function EmployeeTable({
+  employees,
+  isLoading,
+  isFetching,
+  error,
+}: Props) {
   if (isLoading) {
     return (
       <Paper>
@@ -70,25 +77,27 @@ export default function EmployeeTable({ employees, isLoading, error }: Props) {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Employee</TableCell>
-            <TableCell>Designation</TableCell>
-            <TableCell>Contact</TableCell>
-            <TableCell>Joined</TableCell>
-            <TableCell align="right">Sales</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
+    <LoadingOverlay isFetching={isFetching}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Employee</TableCell>
+              <TableCell>Designation</TableCell>
+              <TableCell>Contact</TableCell>
+              <TableCell>Joined</TableCell>
+              <TableCell align="right">Sales</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {employees.map((employee) => (
-            <EmployeeTableRow key={employee.id} employee={employee} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <TableBody>
+            {employees.map((employee) => (
+              <EmployeeTableRow key={employee.id} employee={employee} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </LoadingOverlay>
   );
 }

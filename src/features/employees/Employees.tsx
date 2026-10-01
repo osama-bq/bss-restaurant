@@ -12,6 +12,7 @@ export default function EmployeesPage() {
   const {
     data: response,
     isLoading,
+    isFetching,
     error,
   } = useGetEmployeesQuery({
     Page: page,
@@ -28,6 +29,7 @@ export default function EmployeesPage() {
       <EmployeeTable
         employees={employees}
         isLoading={isLoading}
+        isFetching={isFetching}
         error={error}
       />
 

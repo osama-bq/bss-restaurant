@@ -14,6 +14,7 @@ import { useGetOrdersQuery } from "../../../api/orders.api";
 import OrderCard from "./OrderCard";
 import type { Order, OrderStatus, OrderStatusValue } from "../types";
 import { statusPalette } from "../consts";
+import LoadingOverlay from "../../../components/LodingOverlay";
 
 const PER_PAGE = 5;
 
@@ -44,6 +45,7 @@ export default function OrderStatusSection({
   const {
     data: response,
     isLoading,
+    isFetching,
     error,
   } = useGetOrdersQuery(
     {
@@ -128,34 +130,36 @@ export default function OrderStatusSection({
             No {label.toLowerCase()} orders found.
           </Typography>
         ) : (
-          <Stack spacing={1.5}>
-            {orders.map((order) => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                onAdvanceStatus={onAdvanceStatus}
-                onChangeStatus={onChangeStatus}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
-            ))}
-
-            {lastPage > 1 && (
-              <Stack
-                sx={{
-                  alignItems: "center",
-                  pt: 1,
-                }}
-              >
-                <Pagination
-                  page={page}
-                  count={lastPage}
-                  onChange={(_, value) => setPage(value)}
-                  color="primary"
+          <LoadingOverlay isFetching={isFetching}>
+            <Stack spacing={1.5}>
+              {orders.map((order) => (
+                <OrderCard
+                  key={order.id}
+                  order={order}
+                  onAdvanceStatus={onAdvanceStatus}
+                  onChangeStatus={onChangeStatus}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
                 />
-              </Stack>
-            )}
-          </Stack>
+              ))}
+
+              {lastPage > 1 && (
+                <Stack
+                  sx={{
+                    alignItems: "center",
+                    pt: 1,
+                  }}
+                >
+                  <Pagination
+                    page={page}
+                    count={lastPage}
+                    onChange={(_, value) => setPage(value)}
+                    color="primary"
+                  />
+                </Stack>
+              )}
+            </Stack>
+          </LoadingOverlay>
         )}
       </AccordionDetails>
     </Accordion>

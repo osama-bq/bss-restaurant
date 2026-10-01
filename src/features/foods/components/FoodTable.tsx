@@ -17,10 +17,12 @@ import {
 } from "@mui/material";
 import type { Food } from "../types";
 import { BASE_URL } from "../../../api/baseApi";
+import LoadingOverlay from "../../../components/LodingOverlay";
 
 type Props = {
   foods: Food[];
   isLoading: boolean;
+  isFetching: boolean;
   error: unknown;
   onEdit: (food: Food) => void;
   onDelete: (food: Food) => void;
@@ -29,6 +31,7 @@ type Props = {
 export default function FoodTable({
   foods,
   isLoading,
+  isFetching,
   error,
   onEdit,
   onDelete,
@@ -102,122 +105,126 @@ export default function FoodTable({
   }
 
   return (
-    <TableContainer component={Paper} variant="outlined">
-      <Table>
-        <TableHead>
-          <TableRow
-            sx={{
-              "& th": {
-                bgcolor: "action.hover",
-                fontWeight: 600,
-              },
-            }}
-          >
-            <TableCell>Food</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Discount</TableCell>
-            <TableCell>Discounted Price</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {foods.map((food) => (
+    <LoadingOverlay isFetching={isFetching}>
+      <TableContainer component={Paper} variant="outlined">
+        <Table>
+          <TableHead>
             <TableRow
-              key={food.id}
-              hover
               sx={{
-                "&:last-child td": {
-                  borderBottom: 0,
+                "& th": {
+                  bgcolor: "action.hover",
+                  fontWeight: 600,
                 },
               }}
             >
-              <TableCell>
-                <Stack
-                  direction="row"
-                  spacing={1.5}
-                  sx={{ alignItems: "center", minWidth: 280 }}
-                >
-                  <Avatar
-                    src={`${BASE_URL}/images/food/${food.image}`}
-                    alt={food.name}
-                    variant="rounded"
-                    sx={{
-                      width: 48,
-                      height: 48,
-                      bgcolor: "action.hover",
-                    }}
-                  >
-                    <Restaurant fontSize="small" />
-                  </Avatar>
-
-                  <Stack sx={{ minWidth: 0 }}>
-                    <Typography sx={{ fontWeight: 600 }}>
-                      {food.name}
-                    </Typography>
-
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      noWrap
-                      sx={{ maxWidth: 380 }}
-                    >
-                      {food.description}
-                    </Typography>
-                  </Stack>
-                </Stack>
-              </TableCell>
-
-              <TableCell>
-                <Typography sx={{ fontWeight: 600 }}>৳{food.price}</Typography>
-              </TableCell>
-
-              <TableCell>
-                {food.discountType === "None" ? (
-                  <Typography variant="body2" color="text.secondary">
-                    —
-                  </Typography>
-                ) : (
-                  <Chip
-                    size="small"
-                    color="success"
-                    variant="outlined"
-                    label={
-                      food.discountType === "Percentage"
-                        ? `${food.discount}% OFF`
-                        : `৳${food.discount} OFF`
-                    }
-                  />
-                )}
-              </TableCell>
-
-              <TableCell>
-                <Typography sx={{ fontWeight: 600 }}>
-                  ৳{food.discountPrice}
-                </Typography>
-              </TableCell>
-
-              <TableCell align="right">
-                <Tooltip title="Edit food">
-                  <IconButton size="small" onClick={() => onEdit(food)}>
-                    <EditOutlined fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-
-                <Tooltip title="Delete food">
-                  <IconButton
-                    size="small"
-                    color="error"
-                    onClick={() => onDelete(food)}
-                  >
-                    <DeleteOutlined fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
+              <TableCell>Food</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Discount</TableCell>
+              <TableCell>Discounted Price</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+
+          <TableBody>
+            {foods.map((food) => (
+              <TableRow
+                key={food.id}
+                hover
+                sx={{
+                  "&:last-child td": {
+                    borderBottom: 0,
+                  },
+                }}
+              >
+                <TableCell>
+                  <Stack
+                    direction="row"
+                    spacing={1.5}
+                    sx={{ alignItems: "center", minWidth: 280 }}
+                  >
+                    <Avatar
+                      src={`${BASE_URL}/images/food/${food.image}`}
+                      alt={food.name}
+                      variant="rounded"
+                      sx={{
+                        width: 48,
+                        height: 48,
+                        bgcolor: "action.hover",
+                      }}
+                    >
+                      <Restaurant fontSize="small" />
+                    </Avatar>
+
+                    <Stack sx={{ minWidth: 0 }}>
+                      <Typography sx={{ fontWeight: 600 }}>
+                        {food.name}
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        noWrap
+                        sx={{ maxWidth: 380 }}
+                      >
+                        {food.description}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </TableCell>
+
+                <TableCell>
+                  <Typography sx={{ fontWeight: 600 }}>
+                    ৳{food.price}
+                  </Typography>
+                </TableCell>
+
+                <TableCell>
+                  {food.discountType === "None" ? (
+                    <Typography variant="body2" color="text.secondary">
+                      —
+                    </Typography>
+                  ) : (
+                    <Chip
+                      size="small"
+                      color="success"
+                      variant="outlined"
+                      label={
+                        food.discountType === "Percentage"
+                          ? `${food.discount}% OFF`
+                          : `৳${food.discount} OFF`
+                      }
+                    />
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  <Typography sx={{ fontWeight: 600 }}>
+                    ৳{food.discountPrice}
+                  </Typography>
+                </TableCell>
+
+                <TableCell align="right">
+                  <Tooltip title="Edit food">
+                    <IconButton size="small" onClick={() => onEdit(food)}>
+                      <EditOutlined fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Delete food">
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={() => onDelete(food)}
+                    >
+                      <DeleteOutlined fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </LoadingOverlay>
   );
 }

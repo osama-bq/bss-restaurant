@@ -1,10 +1,12 @@
 import { Box, Card, Skeleton, Typography } from "@mui/material";
 import type { Table } from "../types";
 import RestaurantTableCard from "./RestaurantTableCard";
+import LoadingOverlay from "../../../components/LodingOverlay";
 
 type Props = {
   tables: Table[];
   isLoading: boolean;
+  isFetching: boolean;
   error: unknown;
   onEdit: (table: Table) => void;
   onDelete: (table: Table) => void;
@@ -14,6 +16,7 @@ type Props = {
 export default function TableBoard({
   tables,
   isLoading,
+  isFetching,
   error,
   onEdit,
   onDelete,
@@ -68,27 +71,29 @@ export default function TableBoard({
   }
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: {
-          xs: "1fr",
-          sm: "repeat(2, 1fr)",
-          lg: "repeat(3, 1fr)",
-          xl: "repeat(4, 1fr)",
-        },
-        gap: 2,
-      }}
-    >
-      {tables.map((table) => (
-        <RestaurantTableCard
-          key={table.id}
-          table={table}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onAssignEmployee={onAssignEmployee}
-        />
-      ))}
-    </Box>
+    <LoadingOverlay isFetching={isFetching}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+            lg: "repeat(3, 1fr)",
+            xl: "repeat(4, 1fr)",
+          },
+          gap: 2,
+        }}
+      >
+        {tables.map((table) => (
+          <RestaurantTableCard
+            key={table.id}
+            table={table}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onAssignEmployee={onAssignEmployee}
+          />
+        ))}
+      </Box>
+    </LoadingOverlay>
   );
 }

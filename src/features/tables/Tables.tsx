@@ -13,6 +13,7 @@ export default function TablesPage() {
   const {
     data: response,
     isLoading,
+    isFetching,
     error,
   } = useGetTablesQuery({
     Page: page,
@@ -40,6 +41,7 @@ export default function TablesPage() {
       <TableBoard
         tables={tables}
         isLoading={isLoading}
+        isFetching={isFetching}
         error={error}
         onEdit={(table) => {
           // Edit will be implemented later.

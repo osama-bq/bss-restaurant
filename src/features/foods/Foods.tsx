@@ -13,6 +13,7 @@ export default function FoodsPage() {
   const {
     data: response,
     isLoading,
+    isFetching,
     error,
   } = useGetFoodsQuery({
     Page: page,
@@ -40,6 +41,7 @@ export default function FoodsPage() {
       <FoodTable
         foods={foods}
         isLoading={isLoading}
+        isFetching={isFetching}
         error={error}
         onEdit={(food) => console.log("Edit", food.id)}
         onDelete={(food) => console.log("Delete", food.id)}
