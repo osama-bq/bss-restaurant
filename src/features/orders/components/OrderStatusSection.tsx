@@ -17,6 +17,7 @@ import { statusPalette } from "../consts";
 import LoadingOverlay from "../../../components/LodingOverlay";
 
 const PER_PAGE = 5;
+const DEFAULT_SORT = "-orderdate";
 
 type Props = {
   status: 0 | 1 | 2 | 3 | 4 | 5;
@@ -51,6 +52,7 @@ export default function OrderStatusSection({
     {
       Page: page,
       Per_Page: PER_PAGE,
+      Sort: DEFAULT_SORT,
       Search: search,
       Status: status,
     },

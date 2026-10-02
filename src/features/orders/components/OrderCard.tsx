@@ -127,13 +127,14 @@ export default function OrderCard({
         <Stack
           spacing={1}
           sx={{
-            alignItems: "center",
+            alignItems: "end",
+            px: 1,
             py: 2,
           }}
         >
           <Typography
             variant="h6"
-            sx={{ fontWeight: 700, whiteSpace: "nowrap" }}
+            sx={{ fontWeight: 700, whiteSpace: "nowrap", px: 2 }}
           >
             ৳{order.amount}
           </Typography>
