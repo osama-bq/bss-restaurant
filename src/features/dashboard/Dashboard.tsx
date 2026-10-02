@@ -1,18 +1,96 @@
+import { useState } from "react";
+import { MenuItem, Select, Stack, Typography } from "@mui/material";
 import { useGetDashboardStatsQuery } from "../../api/dashboard.api";
 
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const CURRENT_DATE = new Date();
+
+const YEARS = Array.from(
+  { length: 6 },
+  (_, index) => CURRENT_DATE.getFullYear() - index,
+);
+
 export default function DashboardPage() {
-  const { data, isLoading, error } = useGetDashboardStatsQuery({
-    month: String(new Date().getMonth() + 1),
-    year: String(new Date().getFullYear()),
+  const [month, setMonth] = useState((CURRENT_DATE.getMonth() + 1).toString());
+  const [year, setYear] = useState(CURRENT_DATE.getFullYear().toString());
+
+  const {
+    data: stats,
+    isLoading,
+    error,
+  } = useGetDashboardStatsQuery({
+    month,
+    year,
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  return (
+    <Stack spacing={3}>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: { xs: "stretch", sm: "center" },
+        }}
+        spacing={2}
+      >
+        <Stack spacing={0.5}>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            Dashboard
+          </Typography>
 
-  if (error) {
-    return <div>Failed to load dashboard data.</div>;
-  }
+          <Typography variant="body2" color="text.secondary">
+            Overview for {MONTHS[Number(month) - 1]} {year}
+          </Typography>
+        </Stack>
 
-  return <div>{JSON.stringify(data)}</div>;
+        <Stack direction="row" spacing={1}>
+          <Select
+            size="small"
+            value={month}
+            onChange={(event) => setMonth(event.target.value)}
+          >
+            {MONTHS.map((name, index) => (
+              <MenuItem key={name} value={index + 1}>
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <Select
+            size="small"
+            value={year}
+            onChange={(event) => setYear(event.target.value)}
+          >
+            {YEARS.map((value) => (
+              <MenuItem key={value} value={value}>
+                {value}
+              </MenuItem>
+            ))}
+          </Select>
+        </Stack>
+      </Stack>
+
+      {isLoading ? (
+        <>Loading...</>
+      ) : error || !stats ? (
+        <Typography color="error">Failed to load dashboard data.</Typography>
+      ) : (
+        <>{JSON.stringify(stats)}</>
+      )}
+    </Stack>
+  );
 }
