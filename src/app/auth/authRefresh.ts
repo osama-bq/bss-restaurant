@@ -36,6 +36,19 @@ async function performRefresh(): Promise<boolean> {
     });
 
     if (!response.ok) {
+      // response here can also be 401, which means the refresh token is invalid/expired.
+      if (response.status === 401) {
+        console.log("Refresh token is invalid or expired. Clearing session.");
+        console.log("Access token:", localStorage.getItem("token"));
+        console.log("Refresh token:", localStorage.getItem("refreshToken"));
+        console.log(
+          "Refresh token expiry time:",
+          localStorage.getItem("refreshTokenExpiryTime"),
+        );
+        clearSession();
+      } else {
+        console.error("Failed to refresh access token:", response.statusText);
+      }
       return false;
     }
 
@@ -74,6 +87,7 @@ export function refreshAccessToken(): Promise<boolean> {
 }
 
 export function clearSession() {
+  console.log("Clearing session and removing tokens from localStorage");
   localStorage.removeItem("token");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("refreshTokenExpiryTime");

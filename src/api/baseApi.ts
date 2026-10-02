@@ -10,18 +10,6 @@ import { clearSession, refreshAccessToken } from "../app/auth/authRefresh";
 
 export const BASE_URL = "https://bssrms.runasp.net";
 
-/**
- * Extra option that can be supplied to an individual request.
- *
- * Example:
- *
- * query: () => ({
- *   url: "/api/Auth/login",
- *   method: "POST",
- *   body: {...},
- *   skipAuth: true,
- * })
- */
 export type AuthFetchArgs = FetchArgs & {
   skipAuth?: boolean;
 };
