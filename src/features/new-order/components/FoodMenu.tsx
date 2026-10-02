@@ -13,10 +13,13 @@ import { Search, TableRestaurantOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import type { Food } from "../../foods/types";
 import type { CartItem } from "../types";
+import OrderSummary from "./OrderSummary";
 
 type Props = {
   table: Table | null;
   cartItems: CartItem[];
+  totalItems: number;
+  subtotal: number;
   onAdd: (food: Food) => void;
   onDecrease: (foodId: number) => void;
 };
@@ -24,6 +27,8 @@ type Props = {
 export default function FoodMenu({
   table,
   cartItems,
+  totalItems,
+  subtotal,
   onAdd,
   onDecrease,
 }: Props) {
@@ -60,6 +65,12 @@ export default function FoodMenu({
           </Typography>
         </Stack>
       </Stack>
+
+      <OrderSummary
+        items={cartItems}
+        totalItems={totalItems}
+        subtotal={subtotal}
+      />
 
       <Stack
         direction={{ xs: "column", sm: "row" }}

@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import type { Table } from "../../tables/types";
 import type { CartItem } from "../types";
+import { BASE_URL } from "../../../api/baseApi";
 
 type Props = {
   open: boolean;
@@ -110,7 +111,11 @@ export default function CartDrawer({
                 }}
               >
                 <Avatar
-                  src={item.food.image}
+                  src={
+                    item.food.image
+                      ? `${BASE_URL}/images/food/${item.food.image}`
+                      : undefined
+                  }
                   variant="rounded"
                   sx={{
                     width: 48,

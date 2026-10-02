@@ -80,6 +80,8 @@ export default function NewOrderPage() {
             {selectedTableId ? (
               <FoodMenu
                 table={selectedTable}
+                totalItems={totalItems}
+                subtotal={subtotal}
                 cartItems={items}
                 onAdd={addItem}
                 onDecrease={decreaseItem}
