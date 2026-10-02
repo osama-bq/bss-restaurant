@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MenuItem, Select, Stack, Typography } from "@mui/material";
 import { useGetDashboardStatsQuery } from "../../api/dashboard.api";
+import StatCard from "./components/StatCard";
 
 const MONTHS = [
   "January",
@@ -89,7 +90,43 @@ export default function DashboardPage() {
       ) : error || !stats ? (
         <Typography color="error">Failed to load dashboard data.</Typography>
       ) : (
-        <>{JSON.stringify(stats)}</>
+        <>
+          <Stack
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                xl: "repeat(4, 1fr)",
+              },
+              gap: 2,
+            }}
+          >
+            <StatCard
+              title="Total Orders"
+              value={stats.totalOrders}
+              secondary={`${stats.todaysOrders} today`}
+            />
+
+            <StatCard
+              title="Total Revenue"
+              value={`৳${stats.totalRevenue.toLocaleString()}`}
+              secondary={`৳${stats.todaysRevenue.toLocaleString()} today`}
+            />
+
+            <StatCard
+              title="Employees"
+              value={stats.totalEmployees}
+              secondary="Active restaurant staff"
+            />
+
+            <StatCard
+              title="Foods"
+              value={stats.totalFoods}
+              secondary="Items in menu"
+            />
+          </Stack>
+        </>
       )}
     </Stack>
   );

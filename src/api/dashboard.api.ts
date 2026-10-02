@@ -1,7 +1,8 @@
 import { baseApi } from "./baseApi";
-
-import type { Food } from "../features/foods/types";
-import type { Order } from "../features/orders/types";
+import type {
+  DashboardRecentOrder,
+  DashboardTopFood,
+} from "../features/dashboard/types";
 
 export interface StatsTimeRequest {
   month: string;
@@ -10,7 +11,7 @@ export interface StatsTimeRequest {
 
 export interface DashboardStatsResponse {
   occupiedTables: number;
-  recentOrders: Order[];
+  recentOrders: DashboardRecentOrder[];
   salesRevenue: {
     monthlyExpenses: number;
     monthlyRevenue: number;
@@ -31,7 +32,7 @@ export interface DashboardStatsResponse {
   };
   todaysOrders: number;
   todaysRevenue: number;
-  topSellingFoods: Food[];
+  topSellingFoods: DashboardTopFood[];
   totalEmployees: number;
   totalFoods: number;
   totalOrders: number;
