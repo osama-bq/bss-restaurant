@@ -1,6 +1,7 @@
 import {
   Box,
   InputAdornment,
+  Skeleton,
   Stack,
   TextField,
   Typography,
@@ -27,7 +28,7 @@ export default function FoodMenu({
   onDecrease,
 }: Props) {
   const [search, setSearch] = useState("");
-  const { currentData, error } = useGetFoodsQuery({
+  const { currentData, isLoading, error } = useGetFoodsQuery({
     Page: 1,
     Per_Page: 100,
   });
@@ -92,43 +93,72 @@ export default function FoodMenu({
         />
       </Stack>
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "repeat(2, minmax(0, 1fr))",
-            sm: "repeat(3, minmax(0, 1fr))",
-            lg: "repeat(4, minmax(0, 1fr))",
-          },
-          gap: 2,
-        }}
-      >
-        {foods.map((food) => (
-          <FoodCard
-            key={food.id}
-            food={food}
-            quantity={quantities.get(food.id) || 0}
-            onAdd={onAdd}
-            onDecrease={onDecrease}
-          />
-        ))}
-      </Box>
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "repeat(2, minmax(0, 1fr))",
+              sm: "repeat(3, minmax(0, 1fr))",
+              lg: "repeat(4, minmax(0, 1fr))",
+            },
+            gap: 2,
+          }}
+        >
+          {Array.from({ length: 8 }).map((_, index) => (
+            <Stack key={index} spacing={1}>
+              <Skeleton variant="rounded" height={150} />
+              <Skeleton width="70%" />
+              <Skeleton width="90%" />
+              <Skeleton width="40%" />
+            </Stack>
+          ))}
+        </Box>
+      ) : error && foods.length === 0 ? (
+        <Typography color="error">Failed to load foods.</Typography>
+      ) : foods.length === 0 ? (
+        <Typography color="text.secondary">No foods found.</Typography>
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "repeat(2, minmax(0, 1fr))",
+                sm: "repeat(3, minmax(0, 1fr))",
+                lg: "repeat(4, minmax(0, 1fr))",
+              },
+              gap: 2,
+            }}
+          >
+            {foods.map((food) => (
+              <FoodCard
+                key={food.id}
+                food={food}
+                quantity={quantities.get(food.id) || 0}
+                onAdd={onAdd}
+                onDecrease={onDecrease}
+              />
+            ))}
+          </Box>
 
-      <Stack
-        spacing={1}
-        sx={{
-          alignItems: "center",
-          py: 1,
-        }}
-      >
-        <Box sx={{ height: 1 }} />
+          <Stack
+            spacing={1}
+            sx={{
+              alignItems: "center",
+              py: 1,
+            }}
+          >
+            <Box sx={{ height: 1 }} />
 
-        {error && foods.length > 0 && (
-          <Typography color="error" variant="body2">
-            Failed to load more foods.
-          </Typography>
-        )}
-      </Stack>
+            {error && foods.length > 0 && (
+              <Typography color="error" variant="body2">
+                Failed to load more foods.
+              </Typography>
+            )}
+          </Stack>
+        </>
+      )}
     </Stack>
   );
 }
