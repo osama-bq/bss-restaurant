@@ -22,6 +22,8 @@ export default function NewOrderPage() {
 
   const tables = tablesResponse?.data ?? [];
 
+  const selectedTable = tables.find((table) => table.id === selectedTableId);
+
   const handleSelectTable = (table: Table) => {
     setSelectedTableId(table.id);
   };
@@ -63,7 +65,11 @@ export default function NewOrderPage() {
               flexGrow: 1,
             }}
           >
-            {selectedTableId ? <FoodMenu /> : <EmptyTableState />}
+            {selectedTableId ? (
+              <FoodMenu table={selectedTable} />
+            ) : (
+              <EmptyTableState />
+            )}
           </Stack>
         </Stack>
       </Stack>

@@ -1,8 +1,22 @@
-import { Box, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import FoodCard from "./FoodCard";
 import { useGetFoodsQuery } from "../../../api/foods.api";
+import type { Table } from "../../tables/types";
+import { Search, TableRestaurantOutlined } from "@mui/icons-material";
+import { useState } from "react";
 
-export default function FoodMenu() {
+type Props = {
+  table: Table;
+};
+
+export default function FoodMenu({ table }: Props) {
+  const [search, setSearch] = useState("");
   const { currentData, error } = useGetFoodsQuery({
     Page: 1,
     Per_Page: 100,
@@ -12,6 +26,58 @@ export default function FoodMenu() {
 
   return (
     <Stack spacing={2.5}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: "center",
+        }}
+      >
+        <TableRestaurantOutlined color="primary" />
+
+        <Stack>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            Table {table.tableNumber}
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            {table.numberOfSeats} seats
+          </Typography>
+        </Stack>
+      </Stack>
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={1.5}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: { xs: "stretch", sm: "center" },
+        }}
+      >
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+          Add food to cart ({foods.length})
+        </Typography>
+
+        <TextField
+          size="small"
+          placeholder="Search foods..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          sx={{
+            width: { xs: "100%", sm: 260 },
+          }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search fontSize="small" />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
+      </Stack>
+
       <Box
         sx={{
           display: "grid",
