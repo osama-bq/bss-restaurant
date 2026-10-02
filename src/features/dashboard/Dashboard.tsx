@@ -86,7 +86,9 @@ export default function DashboardPage() {
       </Stack>
 
       {isLoading ? (
-        <>Loading...</>
+        <Stack spacing={3}>
+          <DashboardSkeleton />
+        </Stack>
       ) : error || !stats ? (
         <Typography color="error">Failed to load dashboard data.</Typography>
       ) : (
@@ -128,6 +130,34 @@ export default function DashboardPage() {
           </Stack>
         </>
       )}
+    </Stack>
+  );
+}
+
+function DashboardSkeleton() {
+  return (
+    <Stack spacing={2}>
+      <Stack
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+            xl: "repeat(4, 1fr)",
+          },
+          gap: 2,
+        }}
+      >
+        {Array.from({ length: 4 }).map((_, index) => (
+          <StatCard
+            key={index}
+            title="Loading"
+            value="—"
+            secondary=""
+            loading
+          />
+        ))}
+      </Stack>
     </Stack>
   );
 }
