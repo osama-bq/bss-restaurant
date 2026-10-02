@@ -5,6 +5,9 @@ import type { Table } from "../tables/types";
 import TableSelector from "./components/TableSelector";
 import EmptyTableState from "./components/EmptyTableState";
 import FoodMenu from "./components/FoodMenu";
+import CartButton from "./components/CartButton";
+import CartDrawer from "./components/CartDrawer";
+import { useOrderCart } from "./hooks/useOrderCart";
 
 const TABLES_PER_PAGE = 50; // fetch all
 
@@ -22,11 +25,20 @@ export default function NewOrderPage() {
 
   const tables = tablesResponse?.data ?? [];
 
-  const selectedTable = tables.find((table) => table.id === selectedTableId);
+  const selectedTable =
+    tables.find((table) => table.id === selectedTableId) ?? null;
+
+  const [cartOpen, setCartOpen] = useState(false);
+  const [phone, setPhone] = useState("");
+
+  const { items, addItem, decreaseItem, totalItems, subtotal } =
+    useOrderCart(selectedTableId);
 
   const handleSelectTable = (table: Table) => {
     setSelectedTableId(table.id);
   };
+
+  const handlePlaceOrder = () => {};
 
   return (
     <>
@@ -66,13 +78,49 @@ export default function NewOrderPage() {
             }}
           >
             {selectedTableId ? (
-              <FoodMenu table={selectedTable} />
+              <FoodMenu
+                table={selectedTable}
+                cartItems={items}
+                onAdd={addItem}
+                onDecrease={decreaseItem}
+              />
             ) : (
               <EmptyTableState />
             )}
           </Stack>
         </Stack>
       </Stack>
+
+      {selectedTable && (
+        <>
+          <CartButton
+            itemCount={totalItems}
+            subtotal={subtotal}
+            onClick={() => setCartOpen(true)}
+          />
+
+          <CartDrawer
+            open={cartOpen}
+            onClose={() => setCartOpen(false)}
+            table={selectedTable}
+            items={items}
+            subtotal={subtotal}
+            phone={phone}
+            onPhoneChange={setPhone}
+            onAdd={(foodId) => {
+              const item = items.find(
+                (cartItem) => cartItem.food.id === foodId,
+              );
+
+              if (item) {
+                addItem(item.food);
+              }
+            }}
+            onDecrease={decreaseItem}
+            onPlaceOrder={handlePlaceOrder}
+          />
+        </>
+      )}
     </>
   );
 }

@@ -102,7 +102,11 @@ export default function TableSelector({
                 }}
               >
                 <Avatar
-                  src={`${BASE_URL}/images/table/${table.image}`}
+                  src={
+                    table.image
+                      ? `${BASE_URL}/images/table/${table.image}`
+                      : undefined
+                  }
                   variant="rounded"
                   sx={{
                     width: 52,

@@ -10,17 +10,31 @@ import { useGetFoodsQuery } from "../../../api/foods.api";
 import type { Table } from "../../tables/types";
 import { Search, TableRestaurantOutlined } from "@mui/icons-material";
 import { useState } from "react";
+import type { Food } from "../../foods/types";
+import type { CartItem } from "../types";
 
 type Props = {
-  table: Table;
+  table: Table | null;
+  cartItems: CartItem[];
+  onAdd: (food: Food) => void;
+  onDecrease: (foodId: number) => void;
 };
 
-export default function FoodMenu({ table }: Props) {
+export default function FoodMenu({
+  table,
+  cartItems,
+  onAdd,
+  onDecrease,
+}: Props) {
   const [search, setSearch] = useState("");
   const { currentData, error } = useGetFoodsQuery({
     Page: 1,
     Per_Page: 100,
   });
+
+  const quantities = new Map(
+    cartItems.map((item) => [item.food.id, item.quantity]),
+  );
 
   const foods = currentData?.data ?? [];
 
@@ -37,11 +51,11 @@ export default function FoodMenu({ table }: Props) {
 
         <Stack>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Table {table.tableNumber}
+            Table {table?.tableNumber}
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
-            {table.numberOfSeats} seats
+            {table?.numberOfSeats} seats
           </Typography>
         </Stack>
       </Stack>
@@ -93,9 +107,9 @@ export default function FoodMenu({ table }: Props) {
           <FoodCard
             key={food.id}
             food={food}
-            quantity={0}
-            onAdd={() => {}}
-            onDecrease={() => {}}
+            quantity={quantities.get(food.id) || 0}
+            onAdd={onAdd}
+            onDecrease={onDecrease}
           />
         ))}
       </Box>
