@@ -9,7 +9,7 @@ export const theme = createTheme({
       main: "#616161",
     },
     background: {
-      default: "#f8fafc",
+      default: "#f4f7fa", // https://html.phoenixcoded.net/light-able/bootstrap/default/dashboard/index.html
       paper: "#ffffff",
     },
   },
