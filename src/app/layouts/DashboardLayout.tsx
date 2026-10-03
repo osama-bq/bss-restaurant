@@ -13,13 +13,13 @@ export default function DashboardLayout() {
 
   return (
     <>
-      <DashboardHeader drawerOpen={drawerOpen} avatarUrl={profile?.image} />
-
-      <DashboardSidebar
-        open={drawerOpen}
-        onOpen={() => setDrawerOpen(true)}
-        onClose={() => setDrawerOpen(false)}
+      <DashboardHeader
+        onDrawerToggle={() => setDrawerOpen(!drawerOpen)}
+        drawerOpen={drawerOpen}
+        avatarUrl={profile?.image}
       />
+
+      <DashboardSidebar open={drawerOpen} />
 
       <Box
         component="main"

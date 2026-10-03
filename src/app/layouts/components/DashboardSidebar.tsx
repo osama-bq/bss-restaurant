@@ -43,18 +43,11 @@ const MiniSidebar = styled(Drawer, {
 
 type Props = {
   open: boolean;
-  onOpen: () => void;
-  onClose: () => void;
 };
 
-export default function DashboardSidebar({ open, onOpen, onClose }: Props) {
+export default function DashboardSidebar({ open }: Props) {
   return (
-    <MiniSidebar
-      variant="permanent"
-      open={open}
-      onMouseEnter={onOpen}
-      onMouseLeave={onClose}
-    >
+    <MiniSidebar variant="permanent" open={open}>
       <Toolbar
         disableGutters
         sx={{

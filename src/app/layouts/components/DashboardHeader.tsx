@@ -20,13 +20,19 @@ import {
   DRAWER_WIDTH,
   getTitleFromPathname,
 } from "../navConfig";
+import MenuIcon from "@mui/icons-material/Menu";
 
 type Props = {
   drawerOpen: boolean;
   avatarUrl?: string;
+  onDrawerToggle: () => void;
 };
 
-export default function DashboardHeader({ drawerOpen, avatarUrl }: Props) {
+export default function DashboardHeader({
+  drawerOpen,
+  onDrawerToggle,
+  avatarUrl,
+}: Props) {
   const location = useLocation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -61,6 +67,17 @@ export default function DashboardHeader({ drawerOpen, avatarUrl }: Props) {
       }}
     >
       <Toolbar>
+        {/* hamburger icon */}
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={onDrawerToggle}
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
+
         <Typography variant="h6" component="div">
           {getTitleFromPathname(location.pathname)}
         </Typography>
