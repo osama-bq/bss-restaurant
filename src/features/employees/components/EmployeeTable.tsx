@@ -72,6 +72,9 @@ type Props = {
   onPerPageChange: (perPage: number) => void;
   search: string;
   onSearchChange: (search: string) => void;
+  onAdd: () => void;
+  onEdit: (employee: Employee) => void;
+  onDelete: (employee: Employee) => void;
 };
 
 export default function EmployeeTable({
@@ -87,6 +90,9 @@ export default function EmployeeTable({
   onPerPageChange,
   search,
   onSearchChange,
+  onAdd,
+  onEdit,
+  onDelete,
 }: Props) {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [order, setOrder] = useState<Order>("asc");
@@ -156,7 +162,12 @@ export default function EmployeeTable({
     return (
       <TableBody>
         {visible.map((employee) => (
-          <EmployeeTableRow key={employee.id} employee={employee} />
+          <EmployeeTableRow
+            key={employee.id}
+            employee={employee}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         ))}
       </TableBody>
     );
@@ -194,9 +205,7 @@ export default function EmployeeTable({
             bgcolor: "primary.main",
             "&:hover": { bgcolor: "primary.dark" },
           }}
-          onClick={() => {
-            // Add employee modal will go here later.
-          }}
+          onClick={onAdd}
         >
           Add Employee
         </Button>

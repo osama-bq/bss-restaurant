@@ -12,9 +12,15 @@ import type { Employee } from "../type";
 
 type Props = {
   employee: Employee;
+  onEdit: (employee: Employee) => void;
+  onDelete: (employee: Employee) => void;
 };
 
-export default function EmployeeTableRow({ employee }: Props) {
+export default function EmployeeTableRow({
+  employee,
+  onEdit,
+  onDelete,
+}: Props) {
   const { user } = employee;
 
   const joined = new Date(employee.joinDate).toLocaleDateString("en-GB", {
@@ -92,7 +98,7 @@ export default function EmployeeTableRow({ employee }: Props) {
         <IconButton
           size="small"
           aria-label="Employee edit"
-          onClick={(e) => e && undefined} // TODO: Open edit modal
+          onClick={() => onEdit(employee)}
           sx={{
             border: "1px solid #EEF0F3",
             borderRadius: 1,
@@ -106,7 +112,7 @@ export default function EmployeeTableRow({ employee }: Props) {
         <IconButton
           size="small"
           aria-label="Employee delete"
-          onClick={(e) => e && undefined} // TODO: Show delete confirmation
+          onClick={() => onDelete(employee)}
           sx={{
             border: "1px solid #EEF0F3",
             borderRadius: 1,
