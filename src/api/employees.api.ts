@@ -3,7 +3,10 @@ import type {
   Employee,
   EmployeeMutationPayload,
 } from "../features/employees/type";
-import type { PaginationRequest, PaginationResponse } from "./types";
+import type {
+  PaginationRequest,
+  PaginationResponse,
+} from "./types";
 
 export const employeesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,14 +23,19 @@ export const employeesApi = baseApi.injectEndpoints({
           Per_Page,
         },
       }),
+      providesTags: ["Employees"],
     }),
 
-    createEmployee: builder.mutation<unknown, EmployeeMutationPayload>({
+    createEmployee: builder.mutation<
+      unknown,
+      EmployeeMutationPayload
+    >({
       query: (body) => ({
         url: "/api/Employee/create",
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Employees"],
     }),
 
     updateEmployee: builder.mutation<
@@ -42,6 +50,7 @@ export const employeesApi = baseApi.injectEndpoints({
         method: "PUT",
         body,
       }),
+      invalidatesTags: ["Employees"],
     }),
 
     deleteEmployee: builder.mutation<unknown, string>({
@@ -49,6 +58,7 @@ export const employeesApi = baseApi.injectEndpoints({
         url: `/api/Employee/delete/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Employees"],
     }),
   }),
 });
