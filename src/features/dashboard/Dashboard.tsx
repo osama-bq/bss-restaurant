@@ -99,7 +99,7 @@ export default function DashboardPage() {
               gridTemplateColumns: {
                 xs: "1fr",
                 sm: "repeat(2, 1fr)",
-                xl: "repeat(4, 1fr)",
+                lg: "repeat(4, 1fr)",
               },
               gap: 2,
             }}
@@ -143,7 +143,7 @@ function DashboardSkeleton() {
           gridTemplateColumns: {
             xs: "1fr",
             sm: "repeat(2, 1fr)",
-            xl: "repeat(4, 1fr)",
+            lg: "repeat(4, 1fr)",
           },
           gap: 2,
         }}
