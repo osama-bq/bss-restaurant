@@ -1,13 +1,23 @@
-import { Pagination, Stack } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetEmployeesQuery } from "../../api/employees.api";
 import EmployeeTable from "./components/EmployeeTable";
-import EmployeeTableToolbar from "./components/EmployeeTableToolbar";
 
-const PER_PAGE = 5;
+const SEARCH_DEBOUNCE_MS = 400;
 
 export default function EmployeesPage() {
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Wait until the user stops typing before hitting the API.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+      setPage(1);
+    }, SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const {
     data: response,
@@ -16,33 +26,28 @@ export default function EmployeesPage() {
     error,
   } = useGetEmployeesQuery({
     Page: page,
-    Per_Page: PER_PAGE,
+    Per_Page: perPage,
+    // Rename to whatever your API expects (e.g. "Search", "Keyword", "Q").
+    Search: debouncedSearch || undefined,
   });
 
-  const employees = response?.data ?? [];
-  const lastPage = response?.last_page ?? 1;
-
   return (
-    <Stack spacing={3}>
-      <EmployeeTableToolbar total={response?.total ?? 0} />
-
-      <EmployeeTable
-        employees={employees}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        error={error}
-      />
-
-      {!isLoading && !error && lastPage > 1 && (
-        <Stack sx={{ alignItems: "center" }}>
-          <Pagination
-            page={page}
-            count={lastPage}
-            onChange={(_, value) => setPage(value)}
-            color="primary"
-          />
-        </Stack>
-      )}
-    </Stack>
+    <EmployeeTable
+      employees={response?.data ?? []}
+      total={response?.total ?? 0}
+      page={page}
+      perPage={perPage}
+      lastPage={response?.last_page ?? 1}
+      isLoading={isLoading}
+      isFetching={isFetching}
+      error={error}
+      onPageChange={setPage}
+      onPerPageChange={(value) => {
+        setPerPage(value);
+        setPage(1);
+      }}
+      search={search}
+      onSearchChange={setSearch}
+    />
   );
 }
