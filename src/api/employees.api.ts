@@ -1,5 +1,8 @@
 import { baseApi } from "./baseApi";
-import type { Employee } from "../features/employees/type";
+import type {
+  Employee,
+  EmployeeMutationPayload,
+} from "../features/employees/type";
 import type { PaginationRequest, PaginationResponse } from "./types";
 
 export const employeesApi = baseApi.injectEndpoints({
@@ -18,7 +21,41 @@ export const employeesApi = baseApi.injectEndpoints({
         },
       }),
     }),
+
+    createEmployee: builder.mutation<unknown, EmployeeMutationPayload>({
+      query: (body) => ({
+        url: "/api/Employee/create",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    updateEmployee: builder.mutation<
+      unknown,
+      {
+        id: string;
+        body: EmployeeMutationPayload;
+      }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/Employee/update/${id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
+
+    deleteEmployee: builder.mutation<unknown, string>({
+      query: (id) => ({
+        url: `/api/Employee/delete/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetEmployeesQuery } = employeesApi;
+export const {
+  useGetEmployeesQuery,
+  useCreateEmployeeMutation,
+  useUpdateEmployeeMutation,
+  useDeleteEmployeeMutation,
+} = employeesApi;
