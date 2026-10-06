@@ -1,11 +1,11 @@
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
+  Grid,
   Stack,
   TextField,
   Typography,
@@ -111,8 +111,6 @@ const getDefaultValues = (employee?: Employee | null): EmployeeFormValues => {
   };
 };
 
-// Date inputs always render "mm/dd/yyyy", so their label must stay shrunk
-// or it overlaps the placeholder when the field is empty and unfocused.
 const dateFieldSlotProps = { inputLabel: { shrink: true } };
 
 export default function EmployeeFormDialog({
@@ -186,8 +184,7 @@ export default function EmployeeFormDialog({
 
       onClose();
     } catch {
-      // Keep the dialog/form open so the user doesn't lose
-      // the entered data.
+      // Keep the dialog/form open so the user doesn't lose their input.
     }
   };
 
@@ -227,20 +224,20 @@ export default function EmployeeFormDialog({
             title="Profile photo"
             description="Shown across the app next to the employee's name."
           >
-            <Field span={12}>
+            <Grid size={{ xs: 12, sm: 12 }}>
               <ImagePicker
                 value={image}
                 disabled={isSubmitting}
                 onChange={(value) => setValue("image", value)}
               />
-            </Field>
+            </Grid>
           </FormSection>
 
           <FormSection
             title="Personal information"
             description="Name, date of birth and gender."
           >
-            <Field span={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <TextField
                 fullWidth
                 label="First name"
@@ -250,17 +247,17 @@ export default function EmployeeFormDialog({
                 error={!!errors.firstName}
                 helperText={errors.firstName?.message}
               />
-            </Field>
+            </Grid>
 
-            <Field span={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <TextField
                 fullWidth
                 label="Middle name"
                 {...register("middleName")}
               />
-            </Field>
+            </Grid>
 
-            <Field span={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <TextField
                 fullWidth
                 label="Last name"
@@ -270,9 +267,9 @@ export default function EmployeeFormDialog({
                 error={!!errors.lastName}
                 helperText={errors.lastName?.message}
               />
-            </Field>
+            </Grid>
 
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Date of birth"
@@ -280,9 +277,9 @@ export default function EmployeeFormDialog({
                 slotProps={dateFieldSlotProps}
                 {...register("dob")}
               />
-            </Field>
+            </Grid>
 
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Gender ID"
@@ -293,40 +290,40 @@ export default function EmployeeFormDialog({
                 error={!!errors.genderId}
                 helperText={errors.genderId?.message}
               />
-            </Field>
+            </Grid>
           </FormSection>
 
           <FormSection
             title="Family"
             description="Optional family information."
           >
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Father's name"
                 {...register("fatherName")}
               />
-            </Field>
+            </Grid>
 
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Mother's name"
                 {...register("motherName")}
               />
-            </Field>
+            </Grid>
 
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Spouse name"
                 {...register("spouseName")}
               />
-            </Field>
+            </Grid>
           </FormSection>
 
           <FormSection title="Employment" description="Role and joining date.">
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Designation"
@@ -336,9 +333,9 @@ export default function EmployeeFormDialog({
                 error={!!errors.designation}
                 helperText={errors.designation?.message}
               />
-            </Field>
+            </Grid>
 
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Join date"
@@ -350,14 +347,14 @@ export default function EmployeeFormDialog({
                 error={!!errors.joinDate}
                 helperText={errors.joinDate?.message}
               />
-            </Field>
+            </Grid>
           </FormSection>
 
           <FormSection
             title="Contact & identification"
             description="How to reach the employee and their ID."
           >
-            <Field span={12}>
+            <Grid size={{ xs: 12, sm: 12 }}>
               <TextField
                 fullWidth
                 label="Email"
@@ -368,9 +365,9 @@ export default function EmployeeFormDialog({
                 error={!!errors.email}
                 helperText={errors.email?.message}
               />
-            </Field>
+            </Grid>
 
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Phone number"
@@ -380,11 +377,11 @@ export default function EmployeeFormDialog({
                 error={!!errors.phoneNumber}
                 helperText={errors.phoneNumber?.message}
               />
-            </Field>
+            </Grid>
 
-            <Field span={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField fullWidth label="NID" {...register("nid")} />
-            </Field>
+            </Grid>
           </FormSection>
         </Stack>
       </DialogContent>
@@ -411,10 +408,6 @@ export default function EmployeeFormDialog({
   );
 }
 
-/**
- * Two-pane section: title + description on the left (stacks on top on
- * mobile), fields on the right in a 12-column grid.
- */
 function FormSection({
   title,
   description,
@@ -425,15 +418,8 @@ function FormSection({
   children: ReactNode;
 }) {
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: { xs: "1fr", md: "220px minmax(0, 1fr)" },
-        columnGap: 4,
-        rowGap: 2,
-      }}
-    >
-      <Box>
+    <Grid container spacing={{ xs: 2, md: 4 }}>
+      <Grid size={{ xs: 12, md: 3 }}>
         <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
           {title}
         </Typography>
@@ -443,27 +429,11 @@ function FormSection({
             {description}
           </Typography>
         )}
-      </Box>
+      </Grid>
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(12, minmax(0, 1fr))",
-          gap: 2,
-          alignItems: "start",
-        }}
-      >
+      <Grid container size={{ xs: 12, md: 9 }} spacing={2}>
         {children}
-      </Box>
-    </Box>
-  );
-}
-
-/** A grid cell spanning `span` of 12 columns (full width on mobile). */
-function Field({ span, children }: { span: number; children: ReactNode }) {
-  return (
-    <Box sx={{ gridColumn: { xs: "span 12", sm: `span ${span}` } }}>
-      {children}
-    </Box>
+      </Grid>
+    </Grid>
   );
 }
