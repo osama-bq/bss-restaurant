@@ -66,7 +66,7 @@ export default function FoodsPage() {
     if (!deleteTarget) return;
 
     try {
-      await deleteFood(deleteTarget.id).unwrap();
+      await deleteFood(deleteTarget.id.toString()).unwrap();
 
       setDeleteTarget(null);
     } catch {

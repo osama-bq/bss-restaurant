@@ -20,7 +20,7 @@ export type FoodFormValues = {
   description: string;
   price: string;
   discountType: Discount;
-  discountPrice: string;
+  discount: string;
   image: ImagePickerValue | null;
 };
 
