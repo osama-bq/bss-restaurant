@@ -1,3 +1,5 @@
+import type { ImagePickerValue } from "../../components/ImagePicker";
+
 export type Food = {
   id: number;
   image: string;
@@ -12,3 +14,22 @@ export type Food = {
 };
 
 export type Discount = "Percentage" | "Flat" | "None";
+
+export type FoodFormValues = {
+  name: string;
+  description: string;
+  price: string;
+  discountType: Discount;
+  discountPrice: string;
+  image: ImagePickerValue | null;
+};
+
+export type FoodMutationPayload = {
+  name: string;
+  description: string;
+  price: number;
+  discountType: Discount;
+  discount: number;
+  image: string;
+  base64: string;
+};
