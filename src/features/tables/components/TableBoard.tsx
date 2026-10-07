@@ -10,7 +10,6 @@ type Props = {
   error: unknown;
   onEdit: (table: Table) => void;
   onDelete: (table: Table) => void;
-  onAssignEmployee: (table: Table) => void;
 };
 
 export default function TableBoard({
@@ -20,7 +19,6 @@ export default function TableBoard({
   error,
   onEdit,
   onDelete,
-  onAssignEmployee,
 }: Props) {
   if (isLoading) {
     return (
@@ -90,7 +88,6 @@ export default function TableBoard({
             table={table}
             onEdit={onEdit}
             onDelete={onDelete}
-            onAssignEmployee={onAssignEmployee}
           />
         ))}
       </Box>

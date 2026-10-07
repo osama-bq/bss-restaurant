@@ -25,14 +25,12 @@ type Props = {
   table: Table;
   onEdit: (table: Table) => void;
   onDelete: (table: Table) => void;
-  onAssignEmployee: (table: Table) => void;
 };
 
 export default function RestaurantTableCard({
   table,
   onEdit,
   onDelete,
-  onAssignEmployee,
 }: Props) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const closeMenu = () => setAnchorEl(null);
@@ -160,10 +158,7 @@ export default function RestaurantTableCard({
           bgcolor: "action.hover",
         }}
       >
-        <TableStaff
-          employees={table.employees}
-          onAssign={() => onAssignEmployee(table)}
-        />
+        <TableStaff tableId={table.id} employees={table.employees} />
       </Box>
     </Card>
   );
