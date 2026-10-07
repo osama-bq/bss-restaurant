@@ -31,7 +31,7 @@ export default function EmployeeTableRow({
 
   return (
     <TableRow hover>
-      <TableCell sx={{ px: 2 }}>
+      <TableCell sx={{ px: 2, py: 1.25 }}>
         <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
           <Avatar
             src={`https://bssrms.runasp.net/images/user/${user.image}`}
@@ -54,13 +54,13 @@ export default function EmployeeTableRow({
         </Stack>
       </TableCell>
 
-      <TableCell sx={{ px: 2 }}>
+      <TableCell sx={{ px: 2, py: 1.25 }}>
         <Typography variant="body2" color="text.secondary">
           {employee.designation}
         </Typography>
       </TableCell>
 
-      <TableCell sx={{ px: 2 }}>
+      <TableCell sx={{ px: 2, py: 1.25 }}>
         <Link
           href={`mailto:${user.email}`}
           variant="body2"
@@ -71,7 +71,7 @@ export default function EmployeeTableRow({
         </Link>
       </TableCell>
 
-      <TableCell sx={{ px: 2 }}>
+      <TableCell sx={{ px: 2, py: 1.25 }}>
         <Link
           href={`tel:${user.phoneNumber}`}
           variant="body2"
@@ -82,19 +82,19 @@ export default function EmployeeTableRow({
         </Link>
       </TableCell>
 
-      <TableCell sx={{ px: 2 }}>
+      <TableCell sx={{ px: 2, py: 1.25 }}>
         <Typography variant="body2" color="text.secondary">
           {joined}
         </Typography>
       </TableCell>
 
-      <TableCell align="right" sx={{ px: 2 }}>
+      <TableCell align="right" sx={{ px: 2, py: 1.25 }}>
         <Typography variant="body2" color="text.secondary">
           {employee.amountSold.toLocaleString()}
         </Typography>
       </TableCell>
 
-      <TableCell align="right" sx={{ px: 2 }}>
+      <TableCell align="right" sx={{ px: 2, py: 1.25 }}>
         <IconButton
           size="small"
           aria-label="Employee edit"
