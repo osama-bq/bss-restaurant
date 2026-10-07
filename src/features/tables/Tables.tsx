@@ -84,10 +84,6 @@ export default function TablesPage() {
         error={error}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onAssignEmployee={(table) => {
-          // Assignment UI will be implemented later.
-          console.log("Assign employee", table.id);
-        }}
       />
 
       <TableFormDialog
