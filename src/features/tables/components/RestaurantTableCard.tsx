@@ -9,7 +9,6 @@ import {
   Card,
   Chip,
   IconButton,
-  ListItemIcon,
   Menu,
   MenuItem,
   Stack,
@@ -93,9 +92,7 @@ export default function RestaurantTableCard({
               onEdit(table);
             }}
           >
-            <ListItemIcon>
-              <EditOutlined fontSize="small" />
-            </ListItemIcon>
+            <EditOutlined fontSize="small" sx={{ mr: 1 }} />
             Edit
           </MenuItem>
 
@@ -106,9 +103,7 @@ export default function RestaurantTableCard({
               onDelete(table);
             }}
           >
-            <ListItemIcon sx={{ color: "inherit" }}>
-              <DeleteOutlined fontSize="small" />
-            </ListItemIcon>
+            <DeleteOutlined fontSize="small" sx={{ mr: 1 }} />
             Delete
           </MenuItem>
         </Menu>

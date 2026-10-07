@@ -18,7 +18,7 @@ type Props = {
 export default function ImagePicker({
   value,
   onChange,
-  label = "Profile image",
+  label = "Image Preview",
   disabled = false,
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -60,9 +60,10 @@ export default function ImagePicker({
       >
         <Box
           sx={{
-            width: 84,
-            height: 84,
-            borderRadius: 2,
+            width: 100,
+            height: 100,
+            minWidth: "fit-content",
+            borderRadius: 1,
             overflow: "hidden",
             border: 1,
             borderColor: "divider",

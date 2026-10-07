@@ -331,6 +331,8 @@ export default function FoodFormDialog({ open, mode, food, onClose }: Props) {
           form="food-form"
           variant="contained"
           disabled={isSubmitting}
+          loading={isSubmitting}
+          loadingPosition="start"
         >
           {isSubmitting ? "Saving..." : isEdit ? "Save Changes" : "Create Food"}
         </Button>

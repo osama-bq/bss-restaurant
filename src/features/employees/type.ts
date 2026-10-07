@@ -1,3 +1,4 @@
+import type { ImagePickerValue } from "../../components/ImagePicker";
 import type { User } from "../auth/type";
 
 export type Employee = {
@@ -51,9 +52,5 @@ export type EmployeeFormValues = {
 
   genderId: string;
 
-  image: {
-    fileName: string;
-    base64: string;
-    preview: string;
-  } | null;
+  image: ImagePickerValue | null;
 };

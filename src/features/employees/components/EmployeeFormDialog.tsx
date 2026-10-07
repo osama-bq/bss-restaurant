@@ -6,6 +6,7 @@ import {
   DialogTitle,
   Divider,
   Grid,
+  MenuItem,
   Stack,
   TextField,
   Typography,
@@ -281,15 +282,21 @@ export default function EmployeeFormDialog({
 
             <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
+                select
                 fullWidth
-                label="Gender ID"
-                type="number"
+                label="Gender"
+                defaultValue="" // Prevents controlled/uncontrolled warning on initial render
                 {...register("genderId", {
                   required: "Gender is required",
+                  valueAsNumber: true,
                 })}
                 error={!!errors.genderId}
                 helperText={errors.genderId?.message}
-              />
+              >
+                <MenuItem value={1}>Male</MenuItem>
+                <MenuItem value={2}>Female</MenuItem>
+                <MenuItem value={3}>Other</MenuItem>
+              </TextField>
             </Grid>
           </FormSection>
 
@@ -396,6 +403,8 @@ export default function EmployeeFormDialog({
           form="employee-form"
           variant="contained"
           disabled={isSubmitting}
+          loading={isSubmitting}
+          loadingPosition="start"
         >
           {isSubmitting
             ? "Saving..."
