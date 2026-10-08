@@ -50,3 +50,15 @@ export type OrderStatus =
   | "Paid";
 
 export type OrderStatusValue = 0 | 1 | 2 | 3 | 4 | 5;
+
+export const ORDER_STATUSES: {
+  value: OrderStatusValue;
+  label: OrderStatus;
+}[] = [
+  { value: 0, label: "Pending" },
+  { value: 1, label: "Confirmed" },
+  { value: 2, label: "Preparing" },
+  { value: 3, label: "PreparedToServe" },
+  { value: 4, label: "Served" },
+  { value: 5, label: "Paid" },
+];

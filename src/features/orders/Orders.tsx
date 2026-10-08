@@ -1,44 +1,72 @@
+import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
-import { useState } from "react";
-import OrderStatusSection from "./components/OrderStatusSection";
-import OrderToolbar from "./components/OrderToolbar";
-import type { OrderStatus } from "./types";
+import { useGetOrdersQuery } from "../../api/orders.api";
 
-const statuses: {
-  value: 0 | 1 | 2 | 3 | 4 | 5;
-  label: OrderStatus;
-  defaultExpanded: boolean;
-}[] = [
-  { value: 0, label: "Pending", defaultExpanded: true },
-  { value: 1, label: "Confirmed", defaultExpanded: true },
-  { value: 2, label: "Preparing", defaultExpanded: true },
-  { value: 3, label: "PreparedToServe", defaultExpanded: true },
-  { value: 4, label: "Served", defaultExpanded: false },
-  { value: 5, label: "Paid", defaultExpanded: false },
-];
+import type { OrderStatusValue } from "./types";
+
+import OrderStatusTabs from "./components/OrderStatusTabs";
+import OrderToolbar from "./components/OrderToolbar";
+import OrderTable from "./components/OrderTable";
+
+const SEARCH_DEBOUNCE_MS = 400;
 
 export default function Orders() {
+  const [status, setStatus] = useState<OrderStatusValue | "all">("all");
+
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+      setPage(1);
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const {
+    data: response,
+    isLoading,
+    isFetching,
+    error,
+  } = useGetOrdersQuery({
+    Page: page,
+    Per_Page: perPage,
+    Search: debouncedSearch || undefined,
+    Status: status === "all" ? undefined : status,
+  });
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
+      <OrderStatusTabs
+        value={status}
+        onChange={(value) => {
+          setStatus(value);
+          setPage(1);
+        }}
+      />
+
       <OrderToolbar search={search} onSearchChange={setSearch} />
 
-      <Stack spacing={2}>
-        {statuses.map((status) => (
-          <OrderStatusSection
-            key={status.value}
-            status={status.value}
-            label={status.label}
-            search={search}
-            defaultExpanded={status.defaultExpanded}
-            onAdvanceStatus={() => {}}
-            onChangeStatus={() => {}}
-            onEdit={() => {}}
-            onDelete={() => {}}
-          />
-        ))}
-      </Stack>
+      <OrderTable
+        orders={response?.data ?? []}
+        total={response?.total ?? 0}
+        page={page}
+        perPage={perPage}
+        lastPage={response?.last_page ?? 1}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        error={error}
+        onPageChange={setPage}
+        onPerPageChange={(value) => {
+          setPerPage(value);
+          setPage(1);
+        }}
+      />
     </Stack>
   );
 }
