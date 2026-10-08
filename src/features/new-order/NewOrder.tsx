@@ -8,8 +8,19 @@ import FoodMenu from "./components/FoodMenu";
 import CartButton from "./components/CartButton";
 import CartDrawer from "./components/CartDrawer";
 import { useOrderCart } from "./hooks/useOrderCart";
+import type { OrderMutationPayload } from "../orders/types";
+import { useCreateOrderMutation } from "../../api/orders.api";
 
 const TABLES_PER_PAGE = 50; // fetch all
+
+const generateUniqueOrderNumber = (tableNumber: string) => {
+  const now = Date.now();
+  const year = new Date(now).getFullYear().toString().slice(-2);
+  const month = (new Date(now).getMonth() + 1).toString().padStart(2, "0");
+  const day = new Date(now).getDate().toString().padStart(2, "0");
+  const timestamp = now.toString().slice(-4);
+  return `${year}${month}${day}-${tableNumber}-${timestamp}`;
+};
 
 export default function NewOrderPage() {
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
@@ -31,14 +42,45 @@ export default function NewOrderPage() {
   const [cartOpen, setCartOpen] = useState(false);
   const [phone, setPhone] = useState("");
 
-  const { items, addItem, decreaseItem, totalItems, subtotal } =
+  const { items, addItem, decreaseItem, totalItems, subtotal, clearCart } =
     useOrderCart(selectedTableId);
+
+  const [createOrder] = useCreateOrderMutation();
 
   const handleSelectTable = (table: Table) => {
     setSelectedTableId(table.id);
+    setCartOpen(false);
+    setPhone("");
   };
 
-  const handlePlaceOrder = () => {};
+  const handlePlaceOrder = async () => {
+    if (!selectedTable || items.length === 0) {
+      return;
+    }
+
+    const payload: OrderMutationPayload = {
+      tableId: selectedTable.id,
+      orderNumber: generateUniqueOrderNumber(selectedTable.tableNumber),
+      amount: subtotal,
+      phoneNumber: phone ?? null,
+      items: items.map((item) => ({
+        foodId: item.food.id,
+        foodPackageId: null,
+        quantity: item.quantity,
+        unitPrice: item.food.price,
+        totalPrice: item.food.price * item.quantity,
+      })),
+    };
+
+    try {
+      await createOrder(payload).unwrap();
+      setCartOpen(false);
+      setPhone("");
+      clearCart();
+    } catch (error) {
+      console.error("Failed to place order:", error);
+    }
+  };
 
   return (
     <>

@@ -13,9 +13,6 @@ type Props = {
 export default function OrderSummary({ items, totalItems, subtotal }: Props) {
   if (items.length === 0) return null;
 
-  const visibleItems = items.slice(0, 5);
-  const hiddenCount = items.length - visibleItems.length;
-
   return (
     <Box
       sx={{
@@ -59,7 +56,7 @@ export default function OrderSummary({ items, totalItems, subtotal }: Props) {
 
         <Stack
           direction="row"
-          spacing={1}
+          spacing={2}
           sx={{
             overflowX: "auto",
             minWidth: 0,
@@ -67,7 +64,7 @@ export default function OrderSummary({ items, totalItems, subtotal }: Props) {
             pb: 0.5,
           }}
         >
-          {visibleItems.map((item) => (
+          {items.map((item) => (
             <Tooltip
               key={item.food.id}
               title={`${item.food.name} × ${item.quantity}`}
@@ -95,18 +92,6 @@ export default function OrderSummary({ items, totalItems, subtotal }: Props) {
               </Badge>
             </Tooltip>
           ))}
-
-          {hiddenCount > 0 && (
-            <Avatar
-              variant="rounded"
-              sx={{
-                width: 48,
-                height: 48,
-              }}
-            >
-              +{hiddenCount}
-            </Avatar>
-          )}
         </Stack>
       </Stack>
     </Box>
