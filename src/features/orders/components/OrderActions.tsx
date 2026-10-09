@@ -5,26 +5,53 @@ import { useState } from "react";
 import { NEXT_ORDER_STATUS, ORDER_STATUS_VALUES } from "../consts";
 import type { Order } from "../types";
 import { getStatusColor } from "../utils";
+import {
+  useDeleteOrderMutation,
+  useUpdateOrderStatusMutation,
+} from "../../../api/orders.api";
+import ConfirmDialog from "../../../components/ConfirmDialog";
+import OrderEditForm from "./OrderEditForm";
+import ChangeOrderStatusDialog from "./ChangeOrderStatusDialog";
 
 type Props = {
   order: Order;
 };
 
 export default function OrderActions({ order }: Props) {
+  const [statusDialogOpen, setStatusDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const nextStatus = NEXT_ORDER_STATUS[order.orderStatus];
 
+  const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const [formOpen, setFormOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  const [deleteOrder, deleteState] = useDeleteOrderMutation();
+
+  const [deleteTarget, setDeleteTarget] = useState<Order | null>(null);
+
   const handleAdvanceStatus = () => {
     if (!nextStatus) return;
+    updateOrderStatus({
+      id: order.id,
+      body: { status: ORDER_STATUS_VALUES[nextStatus] },
+    });
+  };
 
-    // TODO:
-    // call the dedicated status mutation here.
-    console.log(
-      "Advance order status:",
-      order.id,
-      ORDER_STATUS_VALUES[nextStatus],
-    );
+  const handleDelete = (order: Order) => {
+    setDeleteTarget(order);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget) return;
+
+    try {
+      await deleteOrder(deleteTarget.id).unwrap();
+      setDeleteTarget(null);
+    } catch {
+      // Keep confirmation dialog open on failure.
+    }
   };
 
   return (
@@ -66,8 +93,7 @@ export default function OrderActions({ order }: Props) {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
-
-            // TODO: open arbitrary status dialog
+            setStatusDialogOpen(true);
           }}
         >
           Change Status
@@ -77,7 +103,8 @@ export default function OrderActions({ order }: Props) {
           onClick={() => {
             setAnchorEl(null);
 
-            // TODO: open edit order UI
+            setFormOpen(true);
+            setSelectedOrder(order);
           }}
         >
           Edit Order
@@ -87,13 +114,42 @@ export default function OrderActions({ order }: Props) {
           sx={{ color: "error.main" }}
           onClick={() => {
             setAnchorEl(null);
-
-            // TODO: open delete confirmation
+            handleDelete(order);
           }}
         >
           Delete Order
         </MenuItem>
       </Menu>
+
+      <ChangeOrderStatusDialog
+        key={order.id}
+        open={statusDialogOpen}
+        order={order}
+        onClose={() => setStatusDialogOpen(false)}
+      />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Delete Order?"
+        description={
+          deleteTarget
+            ? `Are you sure you want to delete order #${deleteTarget.orderNumber}? This action cannot be undone.`
+            : ""
+        }
+        confirmLabel="Delete Order"
+        loading={deleteState.isLoading}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleConfirmDelete}
+      />
+
+      <OrderEditForm
+        open={formOpen}
+        order={selectedOrder ?? null}
+        onClose={() => {
+          setFormOpen(false);
+          setSelectedOrder(null);
+        }}
+      />
     </Stack>
   );
 }

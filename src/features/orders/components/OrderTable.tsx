@@ -238,7 +238,22 @@ export default function OrderTable({
               showLastButton
               shape="rounded"
               variant="outlined"
-              renderItem={(item) => <PaginationItem {...item} />}
+              renderItem={(item) => (
+                <PaginationItem
+                  {...item}
+                  sx={{
+                    borderColor: "divider",
+                    color: "primary.main",
+                    "&.Mui-selected": {
+                      bgcolor: "primary.main",
+                      color: "primary.contrastText",
+                      borderColor: "primary.main",
+                      "&:hover": { bgcolor: "primary.dark" },
+                    },
+                    "&.Mui-disabled": { bgcolor: "action.disabledBackground" },
+                  }}
+                />
+              )}
             />
           )}
         </Stack>
