@@ -18,6 +18,8 @@ import {
 import type { Order } from "../types";
 import OrderTableRow from "./OrderTableRow";
 import LoadingOverlay from "../../../components/LodingOverlay";
+import EmptyState from "../../../components/EmptyState";
+import ErrorState from "../../../components/ErrorState";
 
 type Props = {
   orders: Order[];
@@ -28,6 +30,7 @@ type Props = {
   isLoading: boolean;
   isFetching: boolean;
   error: unknown;
+  onRetry: () => void;
   onPageChange: (page: number) => void;
   onPerPageChange: (perPage: number) => void;
 };
@@ -50,6 +53,7 @@ export default function OrderTable({
   isLoading,
   isFetching,
   error,
+  onRetry,
   onPageChange,
   onPerPageChange,
 }: Props) {
@@ -93,9 +97,15 @@ export default function OrderTable({
                 textAlign: "center",
               }}
             >
-              <Typography color={error ? "error" : "text.secondary"}>
-                {error ? "Failed to load orders." : "No orders found."}
-              </Typography>
+              {error ? (
+                <ErrorState
+                  title="Error"
+                  description="Failed to load orders!"
+                  onRetry={onRetry}
+                />
+              ) : (
+                <EmptyState />
+              )}
             </TableCell>
           </TableRow>
         </TableBody>

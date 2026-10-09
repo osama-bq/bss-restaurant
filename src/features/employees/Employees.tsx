@@ -38,6 +38,7 @@ export default function EmployeesPage() {
     isLoading,
     isFetching,
     error,
+    refetch,
   } = useGetEmployeesQuery({
     Page: page,
     Per_Page: perPage,
@@ -92,6 +93,7 @@ export default function EmployeesPage() {
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onRetry={refetch}
       />
 
       <EmployeeFormDialog

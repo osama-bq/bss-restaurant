@@ -40,6 +40,7 @@ export default function FoodsPage() {
     isLoading,
     isFetching,
     error,
+    refetch,
   } = useGetFoodsQuery({
     Page: page,
     Per_Page: perPage,
@@ -95,6 +96,7 @@ export default function FoodsPage() {
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onRetry={refetch}
       />
 
       <FoodFormDialog

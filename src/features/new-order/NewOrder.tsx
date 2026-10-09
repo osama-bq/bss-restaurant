@@ -29,6 +29,7 @@ export default function NewOrderPage() {
     data: tablesResponse,
     isLoading: tablesLoading,
     error: tablesError,
+    refetch,
   } = useGetTablesQuery({
     Page: 1,
     Per_Page: TABLES_PER_PAGE,
@@ -45,7 +46,7 @@ export default function NewOrderPage() {
   const { items, addItem, decreaseItem, totalItems, subtotal, clearCart } =
     useOrderCart(selectedTableId);
 
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, createOrderState] = useCreateOrderMutation();
 
   const handleSelectTable = (table: Table) => {
     setSelectedTableId(table.id);
@@ -54,7 +55,15 @@ export default function NewOrderPage() {
   };
 
   const handlePlaceOrder = async () => {
-    if (!selectedTable || items.length === 0) {
+    if (!selectedTable || items.length === 0 || createOrderState.isLoading) {
+      return;
+    }
+
+    if (
+      items.some(
+        (item) => !Number.isInteger(item.quantity) || item.quantity <= 0,
+      )
+    ) {
       return;
     }
 
@@ -62,14 +71,18 @@ export default function NewOrderPage() {
       tableId: selectedTable.id,
       orderNumber: generateUniqueOrderNumber(selectedTable.tableNumber),
       amount: subtotal,
-      phoneNumber: phone ?? null,
-      items: items.map((item) => ({
-        foodId: item.food.id,
-        foodPackageId: null,
-        quantity: item.quantity,
-        unitPrice: item.food.price,
-        totalPrice: item.food.price * item.quantity,
-      })),
+      phoneNumber: phone.trim() || null,
+      items: items.map((item) => {
+        const unitPrice = item.food.discountPrice ?? item.food.price;
+
+        return {
+          foodId: item.food.id,
+          foodPackageId: null,
+          quantity: item.quantity,
+          unitPrice,
+          totalPrice: unitPrice * item.quantity,
+        };
+      }),
     };
 
     try {
@@ -99,8 +112,9 @@ export default function NewOrderPage() {
             sx={{
               width: {
                 xs: "100%",
-                md: 300,
+                md: 250,
               },
+              height: { md: "calc(100vh - 150px)" },
               flexShrink: 0,
             }}
           >
@@ -110,6 +124,7 @@ export default function NewOrderPage() {
               isLoading={tablesLoading}
               error={tablesError}
               onSelect={handleSelectTable}
+              onRetry={refetch}
             />
           </Stack>
 

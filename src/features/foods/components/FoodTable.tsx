@@ -23,6 +23,8 @@ import { useMemo, useState } from "react";
 import type { Food } from "../types";
 import FoodTableRow from "./FoodTableRow";
 import LoadingOverlay from "../../../components/LodingOverlay";
+import ErrorState from "../../../components/ErrorState";
+import EmptyState from "../../../components/EmptyState";
 
 type SortKey = "name" | "price" | "discountPrice" | "discount";
 
@@ -70,6 +72,7 @@ type Props = {
   onAdd: () => void;
   onEdit: (food: Food) => void;
   onDelete: (food: Food) => void;
+  onRetry: () => void;
 };
 
 export default function FoodTable({
@@ -88,6 +91,7 @@ export default function FoodTable({
   onAdd,
   onEdit,
   onDelete,
+  onRetry,
 }: Props) {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
 
@@ -160,9 +164,15 @@ export default function FoodTable({
                 textAlign: "center",
               }}
             >
-              <Typography color={error ? "error" : "text.secondary"}>
-                {error ? "Failed to load foods." : "No foods found."}
-              </Typography>
+              {error ? (
+                <ErrorState
+                  title="Error"
+                  description="Failed to load foods!"
+                  onRetry={onRetry}
+                />
+              ) : (
+                <EmptyState />
+              )}
             </TableCell>
           </TableRow>
         </TableBody>

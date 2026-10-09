@@ -33,6 +33,7 @@ export default function Orders() {
     isLoading,
     isFetching,
     error,
+    refetch,
   } = useGetOrdersQuery({
     Page: page,
     Per_Page: perPage,
@@ -61,6 +62,7 @@ export default function Orders() {
         isLoading={isLoading}
         isFetching={isFetching}
         error={error}
+        onRetry={refetch}
         onPageChange={setPage}
         onPerPageChange={(value) => {
           setPerPage(value);

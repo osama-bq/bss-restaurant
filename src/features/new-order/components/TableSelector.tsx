@@ -10,12 +10,14 @@ import {
 } from "@mui/material";
 import type { Table } from "../../tables/types";
 import { BASE_URL } from "../../../api/baseApi";
+import ErrorState from "../../../components/ErrorState";
 
 type Props = {
   tables: Table[];
   selectedTableId: number | null;
   isLoading: boolean;
   error: unknown;
+  onRetry: () => void;
   onSelect: (table: Table) => void;
 };
 
@@ -25,6 +27,7 @@ export default function TableSelector({
   isLoading,
   error,
   onSelect,
+  onRetry,
 }: Props) {
   if (isLoading) {
     return (
@@ -32,6 +35,7 @@ export default function TableSelector({
         direction={{ xs: "row", md: "column" }}
         spacing={1.5}
         sx={{
+          overflowY: { md: "auto", xs: "hidden" },
           overflowX: { xs: "auto", md: "visible" },
           pb: { xs: 1, md: 0 },
           px: { xs: 1, md: 2 },
@@ -54,14 +58,21 @@ export default function TableSelector({
   }
 
   if (error) {
-    return <Typography color="error">Failed to load tables.</Typography>;
+    return (
+      <ErrorState
+        title="Error"
+        description="Failed to load tables."
+        onRetry={onRetry}
+      />
+    );
   }
 
   return (
     <Stack
+      direction={{ xs: "row", md: "column" }}
       spacing={1.5}
       sx={{
-        maxHeight: { md: "calc(100vh - 180px)" },
+        height: { md: "100%" },
         overflowY: { md: "auto" },
         overflowX: { xs: "auto", md: "hidden" },
         pb: { xs: 1, md: 0 },
@@ -94,7 +105,7 @@ export default function TableSelector({
               }}
             >
               <Stack
-                direction="row"
+                direction={{ xs: "column", md: "row" }}
                 spacing={1.25}
                 sx={{
                   width: "100%",
@@ -119,7 +130,7 @@ export default function TableSelector({
 
                 <Stack sx={{ minWidth: 0, flexGrow: 1 }}>
                   <Typography sx={{ fontWeight: 600 }} noWrap>
-                    Table {table.tableNumber}
+                    {table.tableNumber}
                   </Typography>
 
                   <Typography variant="caption" color="text.secondary">

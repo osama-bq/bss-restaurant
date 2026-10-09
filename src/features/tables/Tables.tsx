@@ -29,6 +29,7 @@ export default function TablesPage() {
     isLoading,
     isFetching,
     error,
+    refetch,
   } = useGetTablesQuery({
     Page: page,
     Per_Page: PER_PAGE,
@@ -84,6 +85,7 @@ export default function TablesPage() {
         error={error}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onRetry={refetch}
       />
 
       <TableFormDialog

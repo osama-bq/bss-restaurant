@@ -23,6 +23,8 @@ import { useMemo, useState } from "react";
 import type { Employee } from "../type";
 import EmployeeTableRow from "./EmployeeTableRow";
 import LoadingOverlay from "../../../components/LodingOverlay";
+import ErrorState from "../../../components/ErrorState";
+import EmptyState from "../../../components/EmptyState";
 
 type SortKey =
   | "name"
@@ -75,6 +77,7 @@ type Props = {
   onAdd: () => void;
   onEdit: (employee: Employee) => void;
   onDelete: (employee: Employee) => void;
+  onRetry: () => void;
 };
 
 export default function EmployeeTable({
@@ -93,6 +96,7 @@ export default function EmployeeTable({
   onAdd,
   onEdit,
   onDelete,
+  onRetry,
 }: Props) {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [order, setOrder] = useState<Order>("asc");
@@ -150,9 +154,15 @@ export default function EmployeeTable({
         <TableBody>
           <TableRow>
             <TableCell colSpan={7} sx={{ p: 4, textAlign: "center" }}>
-              <Typography color={error ? "error" : "text.secondary"}>
-                {error ? "Failed to load employees." : "No employees found."}
-              </Typography>
+              {error ? (
+                <ErrorState
+                  title="Error"
+                  description="Failed to load employees!"
+                  onRetry={onRetry}
+                />
+              ) : (
+                <EmptyState />
+              )}
             </TableCell>
           </TableRow>
         </TableBody>
