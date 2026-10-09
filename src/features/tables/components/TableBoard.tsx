@@ -1,4 +1,4 @@
-import { Box, Card, Skeleton, Typography } from "@mui/material";
+import { Box, Card, Skeleton } from "@mui/material";
 import type { Table } from "../types";
 import RestaurantTableCard from "./RestaurantTableCard";
 import LoadingOverlay from "../../../components/LodingOverlay";
