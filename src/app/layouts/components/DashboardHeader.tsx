@@ -26,12 +26,14 @@ type Props = {
   drawerOpen: boolean;
   avatarUrl?: string;
   onDrawerToggle: () => void;
+  isMobile: boolean;
 };
 
 export default function DashboardHeader({
   drawerOpen,
   onDrawerToggle,
   avatarUrl,
+  isMobile,
 }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -57,7 +59,7 @@ export default function DashboardHeader({
   return (
     <AppBar
       sx={{
-        width: `calc(100% - ${currentWidth}px)`,
+        width: isMobile ? "100%" : `calc(100% - ${currentWidth}px)`,
         ml: `${currentWidth}px`,
         transition: (theme) =>
           theme.transitions.create(["width", "margin"], {
@@ -67,16 +69,17 @@ export default function DashboardHeader({
       }}
     >
       <Toolbar>
-        {/* hamburger icon */}
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={onDrawerToggle}
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton>
+        {!isMobile && (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={onDrawerToggle}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
 
         <Typography variant="h6" component="div">
           {getTitleFromPathname(location.pathname)}

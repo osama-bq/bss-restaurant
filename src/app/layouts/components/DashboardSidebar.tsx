@@ -9,6 +9,11 @@ import {
   Toolbar,
   Typography,
   styled,
+  useMediaQuery,
+  useTheme,
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper,
 } from "@mui/material";
 import logo from "../../../assets/logo.png";
 import { DRAWER_WIDTH, NAV_ITEMS } from "../navConfig";
@@ -46,6 +51,42 @@ type Props = {
 };
 
 export default function DashboardSidebar({ open }: Props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  if (isMobile) {
+    return (
+      <Paper
+        elevation={3}
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: theme.zIndex.drawer,
+        }}
+      >
+        <BottomNavigation showLabels sx={{ height: 64 }}>
+          {NAV_ITEMS.map(({ title, path, icon: Icon }) => (
+            <BottomNavigationAction
+              key={path}
+              component={NavLink}
+              to={path}
+              label={title}
+              icon={<Icon />}
+              sx={{
+                minWidth: 0,
+                "&.active": {
+                  color: "primary.main",
+                },
+              }}
+            />
+          ))}
+        </BottomNavigation>
+      </Paper>
+    );
+  }
+
   return (
     <MiniSidebar variant="permanent" open={open}>
       <Toolbar
