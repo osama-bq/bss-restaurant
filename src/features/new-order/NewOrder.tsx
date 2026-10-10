@@ -106,6 +106,13 @@ export default function NewOrderPage() {
           spacing={2.5}
           sx={{
             alignItems: "stretch",
+            border: 0.5,
+            borderColor: "divider",
+            borderRadius: 1.5,
+            px: { md: 2, xs: 1.8 },
+            py: { md: 2, xs: 1 },
+            height: { md: "calc(100vh - 115px)", xs: "calc(100vh - 170px)" },
+            boxShadow: "inset 0 0 6px 2px rgba(0, 0, 0, 0.2)",
           }}
         >
           <Stack
@@ -114,7 +121,7 @@ export default function NewOrderPage() {
                 xs: "100%",
                 md: 250,
               },
-              height: { md: "calc(100vh - 150px)" },
+              height: { md: "100%" },
               flexShrink: 0,
             }}
           >
@@ -132,6 +139,8 @@ export default function NewOrderPage() {
             sx={{
               minWidth: 0,
               flexGrow: 1,
+              maxHeight: "100%",
+              overflowY: "auto",
             }}
           >
             {selectedTableId ? (

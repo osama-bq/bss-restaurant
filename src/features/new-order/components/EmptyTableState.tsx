@@ -6,7 +6,7 @@ export default function EmptyTableState() {
     <Paper
       variant="outlined"
       sx={{
-        minHeight: 500,
+        minHeight: 800,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

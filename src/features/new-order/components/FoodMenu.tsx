@@ -10,10 +10,10 @@ import FoodCard from "./FoodCard";
 import { useGetFoodsQuery } from "../../../api/foods.api";
 import type { Table } from "../../tables/types";
 import { Search, TableRestaurantOutlined } from "@mui/icons-material";
-import { useState } from "react";
 import type { Food } from "../../foods/types";
 import type { CartItem } from "../types";
 import OrderSummary from "./OrderSummary";
+import { useState } from "react";
 
 type Props = {
   table: Table | null;
@@ -45,7 +45,13 @@ export default function FoodMenu({
   const foods = currentData?.data ?? [];
 
   return (
-    <Stack spacing={2.5}>
+    <Stack
+      spacing={2.5}
+      sx={{
+        maxHeight: "100%",
+        overflowY: "auto",
+      }}
+    >
       <Stack
         direction="row"
         spacing={1}
@@ -140,6 +146,13 @@ export default function FoodMenu({
                 lg: "repeat(4, minmax(0, 1fr))",
               },
               gap: 2,
+              gridAutoRows: "305px",
+              overflowY: "auto",
+              maxHeight: "100%",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+              scrollbarWidth: "none",
             }}
           >
             {foods.map((food) => (
@@ -152,22 +165,6 @@ export default function FoodMenu({
               />
             ))}
           </Box>
-
-          <Stack
-            spacing={1}
-            sx={{
-              alignItems: "center",
-              py: 1,
-            }}
-          >
-            <Box sx={{ height: 1 }} />
-
-            {error && foods.length > 0 && (
-              <Typography color="error" variant="body2">
-                Failed to load more foods.
-              </Typography>
-            )}
-          </Stack>
         </>
       )}
     </Stack>

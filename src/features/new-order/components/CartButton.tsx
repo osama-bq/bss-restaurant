@@ -1,5 +1,12 @@
 import { ShoppingCartOutlined } from "@mui/icons-material";
-import { Badge, Fab, Stack, Typography } from "@mui/material";
+import {
+  Badge,
+  Fab,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 type Props = {
   itemCount: number;
@@ -8,6 +15,9 @@ type Props = {
 };
 
 export default function CartButton({ itemCount, subtotal, onClick }: Props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   if (itemCount === 0) return null;
 
   return (
@@ -17,8 +27,8 @@ export default function CartButton({ itemCount, subtotal, onClick }: Props) {
       onClick={onClick}
       sx={{
         position: "fixed",
-        right: { xs: 16, md: 24 },
-        bottom: { xs: 16, md: 24 },
+        right: { xs: 32, md: 32 },
+        bottom: { xs: 72, md: 40 },
         zIndex: (theme) => theme.zIndex.fab,
         "& .cart-subtotal": {
           width: 0,
@@ -30,18 +40,20 @@ export default function CartButton({ itemCount, subtotal, onClick }: Props) {
         },
       }}
     >
-      <Badge badgeContent={itemCount} color="secondary" sx={{ mr: 1 }}>
+      <Badge badgeContent={itemCount} color="secondary" sx={{ mr: { md: 1 } }}>
         <ShoppingCartOutlined />
       </Badge>
 
-      <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
-        <Typography variant="body2" sx={{ fontWeight: 600 }}>
-          Cart
-        </Typography>
-        <Typography className="cart-subtotal" variant="body2">
-          ৳{subtotal}
-        </Typography>
-      </Stack>
+      {isMobile ? null : (
+        <Stack direction="row" spacing={0.75} sx={{ alignItems: "center" }}>
+          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+            Cart
+          </Typography>
+          <Typography className="cart-subtotal" variant="body2">
+            ৳{subtotal}
+          </Typography>
+        </Stack>
+      )}
     </Fab>
   );
 }
