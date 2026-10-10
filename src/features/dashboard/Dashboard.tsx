@@ -2,6 +2,8 @@ import { useState } from "react";
 import { MenuItem, Select, Stack, Typography } from "@mui/material";
 import { useGetDashboardStatsQuery } from "../../api/dashboard.api";
 import StatCard from "./components/StatCard";
+import ErrorState from "../../components/ErrorState";
+import TableOccupancy from "./components/TableOccupancy";
 
 const MONTHS = [
   "January",
@@ -90,7 +92,10 @@ export default function DashboardPage() {
           <DashboardSkeleton />
         </Stack>
       ) : error || !stats ? (
-        <Typography color="error">Failed to load dashboard data.</Typography>
+        <ErrorState
+          title="Error"
+          description="Failed to load dashboard data."
+        />
       ) : (
         <>
           <Stack
@@ -126,6 +131,13 @@ export default function DashboardPage() {
               title="Foods"
               value={stats.totalFoods}
               secondary="Items in menu"
+            />
+          </Stack>
+
+          <Stack>
+            <TableOccupancy
+              total={stats.totalTables}
+              occupied={stats.occupiedTables}
             />
           </Stack>
         </>
