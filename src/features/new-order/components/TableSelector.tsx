@@ -76,7 +76,11 @@ export default function TableSelector({
         overflowY: { md: "auto" },
         overflowX: { xs: "auto", md: "hidden" },
         pb: { xs: 1, md: 0 },
-        px: { xs: 1, md: 2 },
+        px: { xs: 0, md: 1 },
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+        scrollbarWidth: "none",
       }}
     >
       {tables.map((table) => {
