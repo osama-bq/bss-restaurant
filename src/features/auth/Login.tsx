@@ -1,7 +1,7 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { Form, useNavigation } from "react-router-dom";
 
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.svg";
 
 export default function LoginPage() {
   const navigation = useNavigation();
@@ -38,8 +38,8 @@ export default function LoginPage() {
             src={logo}
             alt="BSS Restaurant"
             sx={{
-              width: 70,
-              height: 70,
+              width: 100,
+              height: 100,
               objectFit: "contain",
               mb: 1,
             }}

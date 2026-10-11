@@ -15,7 +15,7 @@ import {
   BottomNavigationAction,
   Paper,
 } from "@mui/material";
-import logo from "../../../assets/logo.png";
+import logo from "../../../assets/logo.svg";
 import { DRAWER_WIDTH, NAV_ITEMS } from "../navConfig";
 
 const MiniSidebar = styled(Drawer, {
