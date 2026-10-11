@@ -189,6 +189,7 @@ export default function NewOrderPage() {
             }}
             onDecrease={decreaseItem}
             onPlaceOrder={handlePlaceOrder}
+            onPlaceOrderLoading={createOrderState.isLoading}
           />
         </>
       )}

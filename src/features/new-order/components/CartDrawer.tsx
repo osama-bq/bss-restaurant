@@ -31,6 +31,7 @@ type Props = {
   onAdd: (foodId: number) => void;
   onDecrease: (foodId: number) => void;
   onPlaceOrder: () => void;
+  onPlaceOrderLoading: boolean;
 };
 
 export default function CartDrawer({
@@ -44,6 +45,7 @@ export default function CartDrawer({
   onAdd,
   onDecrease,
   onPlaceOrder,
+  onPlaceOrderLoading,
 }: Props) {
   return (
     <Drawer
@@ -217,10 +219,10 @@ export default function CartDrawer({
             fullWidth
             variant="contained"
             size="large"
-            disabled={items.length === 0}
+            disabled={items.length === 0 || onPlaceOrderLoading}
             onClick={onPlaceOrder}
           >
-            Place Order
+            {onPlaceOrderLoading ? "Placing order..." : "Place order"}
           </Button>
         </Stack>
       </Stack>
