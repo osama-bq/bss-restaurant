@@ -20,6 +20,8 @@ import {
   RestaurantMenuOutlined,
 } from "@mui/icons-material";
 import FinancialOverview from "./components/FinancialOverview";
+import TopSellingFoods from "./components/TopSellingFoods";
+import RecentOrders from "./components/RecentOrders";
 
 const MONTHS = [
   "January",
@@ -180,6 +182,15 @@ export default function DashboardPage() {
               occupied={stats.occupiedTables}
             />
           </Stack>
+
+          <Stack
+            direction={{ xs: "column", lg: "row" }}
+            spacing={2}
+            sx={{ alignItems: "stretch" }}
+          >
+            <TopSellingFoods foods={stats.topSellingFoods} />
+            <RecentOrders orders={stats.recentOrders} />
+          </Stack>
         </Stack>
       )}
     </Stack>
@@ -204,6 +215,17 @@ function DashboardSkeleton() {
       >
         <Skeleton variant="rounded" height={460} sx={{ borderRadius: 3 }} />
         <Skeleton variant="rounded" height={460} sx={{ borderRadius: 3 }} />
+      </Box>
+
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", lg: "1.2fr 1fr" },
+          gap: 2,
+        }}
+      >
+        <Skeleton variant="rounded" height={380} sx={{ borderRadius: 3 }} />
+        <Skeleton variant="rounded" height={380} sx={{ borderRadius: 3 }} />
       </Box>
     </Stack>
   );
