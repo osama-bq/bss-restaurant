@@ -1,9 +1,15 @@
 import { useState } from "react";
-import { MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Box, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { useGetDashboardStatsQuery } from "../../api/dashboard.api";
 import StatCard from "./components/StatCard";
 import ErrorState from "../../components/ErrorState";
 import TableOccupancy from "./components/TableOccupancy";
+import {
+  BadgeOutlined,
+  PaymentsOutlined,
+  ReceiptLongOutlined,
+  RestaurantMenuOutlined,
+} from "@mui/icons-material";
 
 const MONTHS = [
   "January",
@@ -26,6 +32,16 @@ const YEARS = Array.from(
   { length: 6 },
   (_, index) => CURRENT_DATE.getFullYear() - index,
 );
+
+const STAT_GRID_SX = {
+  display: "grid",
+  gridTemplateColumns: {
+    xs: "1fr",
+    sm: "repeat(2, 1fr)",
+    lg: "repeat(4, 1fr)",
+  },
+  gap: 2,
+};
 
 export default function DashboardPage() {
   const [month, setMonth] = useState((CURRENT_DATE.getMonth() + 1).toString());
@@ -98,41 +114,39 @@ export default function DashboardPage() {
         />
       ) : (
         <>
-          <Stack
-            sx={{
-              display: "grid",
-              gridTemplateColumns: {
-                xs: "1fr",
-                sm: "repeat(2, 1fr)",
-                lg: "repeat(4, 1fr)",
-              },
-              gap: 2,
-            }}
-          >
+          <Box sx={STAT_GRID_SX}>
             <StatCard
               title="Total Orders"
               value={stats.totalOrders}
-              secondary={`${stats.todaysOrders} today`}
+              icon={<ReceiptLongOutlined />}
+              color="primary"
+              badge={`${stats.todaysOrders} today`}
             />
 
             <StatCard
               title="Total Revenue"
               value={`৳${stats.totalRevenue.toLocaleString()}`}
-              secondary={`৳${stats.todaysRevenue.toLocaleString()} today`}
+              icon={<PaymentsOutlined />}
+              color="success"
+              badge={`৳${stats.todaysRevenue.toLocaleString()} today`}
             />
 
             <StatCard
               title="Employees"
               value={stats.totalEmployees}
-              secondary="Active restaurant staff"
+              icon={<BadgeOutlined />}
+              color="info"
+              badge="Active"
             />
 
             <StatCard
               title="Foods"
               value={stats.totalFoods}
-              secondary="Items in menu"
+              icon={<RestaurantMenuOutlined />}
+              color="warning"
+              badge="In menu"
             />
-          </Stack>
+          </Box>
 
           <Stack>
             <TableOccupancy
@@ -149,27 +163,11 @@ export default function DashboardPage() {
 function DashboardSkeleton() {
   return (
     <Stack spacing={2}>
-      <Stack
-        sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            sm: "repeat(2, 1fr)",
-            lg: "repeat(4, 1fr)",
-          },
-          gap: 2,
-        }}
-      >
+      <Box sx={STAT_GRID_SX}>
         {Array.from({ length: 4 }).map((_, index) => (
-          <StatCard
-            key={index}
-            title="Loading"
-            value="—"
-            secondary=""
-            loading
-          />
+          <StatCard key={index} title="" value="" loading />
         ))}
-      </Stack>
+      </Box>
     </Stack>
   );
 }

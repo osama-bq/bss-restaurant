@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { dashboardCardContentSx, dashboardCardSx } from "../cardStyles";
 
 type Props = {
   total: number;
@@ -24,11 +25,13 @@ type SliceTooltipProps = {
   total: number;
 };
 
+const percentOf = (part: number, whole: number) =>
+  whole > 0 ? Math.round((part / whole) * 100) : 0;
+
 function SliceTooltip({ active, payload, total }: SliceTooltipProps) {
   if (!active || !payload?.length) return null;
 
   const { name, value, color } = payload[0].payload;
-  const share = total > 0 ? Math.round((value / total) * 100) : 0;
 
   return (
     <Paper elevation={3} sx={{ px: 1.5, py: 1 }}>
@@ -43,7 +46,7 @@ function SliceTooltip({ active, payload, total }: SliceTooltipProps) {
       </Stack>
 
       <Typography variant="body2" color="text.secondary">
-        {value} {value === 1 ? "table" : "tables"} · {share}%
+        {value} {value === 1 ? "table" : "tables"} · {percentOf(value, total)}%
       </Typography>
     </Paper>
   );
@@ -54,9 +57,7 @@ export default function TableOccupancy({ total, occupied }: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const available = Math.max(total - occupied, 0);
-
-  const occupancyPercentage =
-    total > 0 ? Math.round((occupied / total) * 100) : 0;
+  const occupancyPercentage = percentOf(occupied, total);
 
   const slices: Slice[] = [
     { name: "Occupied", value: occupied, color: theme.palette.warning.main },
@@ -79,11 +80,12 @@ export default function TableOccupancy({ total, occupied }: Props) {
     <Card
       variant="outlined"
       sx={{
-        width: { xs: "100%", lg: 340 },
+        width: { xs: "100%", lg: 360 },
         flexShrink: 0,
+        ...dashboardCardSx,
       }}
     >
-      <CardContent>
+      <CardContent sx={dashboardCardContentSx}>
         <Stack spacing={2}>
           <Stack
             direction="row"
@@ -149,7 +151,6 @@ export default function TableOccupancy({ total, occupied }: Props) {
               </PieChart>
             </ResponsiveContainer>
 
-            {/* Centre label */}
             <Stack
               sx={{
                 position: "absolute",
@@ -167,35 +168,51 @@ export default function TableOccupancy({ total, occupied }: Props) {
             </Stack>
           </Stack>
 
+          {/* Legend rows: dot, name, count and share */}
           <Stack
-            direction="row"
             spacing={1.5}
-            sx={{ p: 1.5, borderRadius: 2, bgcolor: "action.hover" }}
+            sx={{ p: 2, borderRadius: 2, bgcolor: "action.hover" }}
           >
             {slices.map((slice) => (
-              <Stack key={slice.name} spacing={0.25} sx={{ flex: 1 }}>
+              <Stack
+                key={slice.name}
+                direction="row"
+                sx={{ justifyContent: "space-between", alignItems: "center" }}
+              >
                 <Stack
                   direction="row"
-                  spacing={0.75}
+                  spacing={1}
                   sx={{ alignItems: "center" }}
                 >
                   <Box
                     sx={{
-                      width: 8,
-                      height: 8,
+                      width: 10,
+                      height: 10,
                       borderRadius: "50%",
                       bgcolor: slice.color,
                     }}
                   />
 
-                  <Typography variant="caption" color="text.secondary">
-                    {slice.name}
-                  </Typography>
+                  <Typography variant="body2">{slice.name}</Typography>
                 </Stack>
 
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  {slice.value}
-                </Typography>
+                <Stack
+                  direction="row"
+                  spacing={1.5}
+                  sx={{ alignItems: "baseline" }}
+                >
+                  <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                    {slice.value}
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ minWidth: 36, textAlign: "right" }}
+                  >
+                    {percentOf(slice.value, total)}%
+                  </Typography>
+                </Stack>
               </Stack>
             ))}
           </Stack>

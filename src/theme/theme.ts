@@ -3,13 +3,13 @@ import { createTheme } from "@mui/material/styles";
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#2563eb",
+      main: "#6a4cff",
     },
     neutral: {
       main: "#616161",
     },
     background: {
-      default: "#f4f7fa", // https://html.phoenixcoded.net/light-able/bootstrap/default/dashboard/index.html
+      default: "#eef0f5",
       paper: "#ffffff",
     },
   },
