@@ -19,6 +19,7 @@ import {
   ReceiptLongOutlined,
   RestaurantMenuOutlined,
 } from "@mui/icons-material";
+import FinancialOverview from "./components/FinancialOverview";
 
 const MONTHS = [
   "January",
@@ -172,7 +173,8 @@ export default function DashboardPage() {
             />
           </Box>
 
-          <Stack>
+          <Stack direction={{ xs: "column", lg: "row" }} spacing={2}>
+            <FinancialOverview financial={stats.salesRevenue} />
             <TableOccupancy
               total={stats.totalTables}
               occupied={stats.occupiedTables}
