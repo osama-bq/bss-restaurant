@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   useCreateEmployeeMutation,
@@ -101,7 +101,7 @@ const getDefaultValues = (employee?: Employee | null): EmployeeFormValues => {
     genderId:
       user.genderId === null || user.genderId === undefined
         ? ""
-        : String(user.genderId),
+        : user.genderId.toString(),
 
     image: user.image
       ? {
@@ -131,6 +131,7 @@ export default function EmployeeFormDialog({
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     setValue,
@@ -290,22 +291,25 @@ export default function EmployeeFormDialog({
             </Grid>
 
             <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                select
-                fullWidth
-                label="Gender"
-                defaultValue="" // Prevents controlled/uncontrolled warning on initial render
-                {...register("genderId", {
-                  required: "Gender is required",
-                  valueAsNumber: true,
-                })}
-                error={!!errors.genderId}
-                helperText={errors.genderId?.message}
-              >
-                <MenuItem value={1}>Male</MenuItem>
-                <MenuItem value={2}>Female</MenuItem>
-                <MenuItem value={3}>Other</MenuItem>
-              </TextField>
+              <Controller
+                control={control}
+                rules={{ required: "Gender is required" }}
+                name="genderId"
+                render={({ field, fieldState }) => (
+                  <TextField
+                    select
+                    fullWidth
+                    label="Gender"
+                    {...field}
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                  >
+                    <MenuItem value={"1"}>Male</MenuItem>
+                    <MenuItem value={"2"}>Female</MenuItem>
+                    <MenuItem value={"3"}>Other</MenuItem>
+                  </TextField>
+                )}
+              />
             </Grid>
           </FormSection>
 
