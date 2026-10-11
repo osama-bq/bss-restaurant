@@ -82,11 +82,20 @@ export default function TableOccupancy({ total, occupied }: Props) {
       sx={{
         width: { xs: "100%", lg: 360 },
         flexShrink: 0,
+        display: "flex",
+        flexDirection: "column",
         ...dashboardCardSx,
       }}
     >
-      <CardContent sx={dashboardCardContentSx}>
-        <Stack spacing={2}>
+      <CardContent
+        sx={{
+          ...dashboardCardContentSx,
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Stack spacing={2} sx={{ flexGrow: 1 }}>
           <Stack
             direction="row"
             sx={{ justifyContent: "space-between", alignItems: "flex-start" }}
@@ -107,49 +116,56 @@ export default function TableOccupancy({ total, occupied }: Props) {
           <Stack
             sx={{
               position: "relative",
-              height: 230,
+              flexGrow: 1,
+              minHeight: 230,
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                {hasData && (
-                  <Tooltip
-                    content={<SliceTooltip total={total} />}
-                    wrapperStyle={{ outline: "none", zIndex: 1 }}
-                  />
-                )}
-
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  nameKey="name"
-                  innerRadius="66%"
-                  outerRadius="86%"
-                  paddingAngle={hasData ? 3 : 0}
-                  stroke="none"
-                  isAnimationActive
-                  animationDuration={700}
-                  onMouseEnter={(_, index) => hasData && setActiveIndex(index)}
-                  onMouseLeave={() => setActiveIndex(null)}
-                >
-                  {chartData.map((slice, index) => (
-                    <Cell
-                      key={slice.name}
-                      fill={slice.color}
-                      fillOpacity={
-                        activeIndex === null || activeIndex === index ? 1 : 0.4
-                      }
-                      style={{
-                        outline: "none",
-                        transition: "fill-opacity 0.2s",
-                      }}
+            <Box sx={{ position: "absolute", inset: 0 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  {hasData && (
+                    <Tooltip
+                      content={<SliceTooltip total={total} />}
+                      wrapperStyle={{ outline: "none", zIndex: 1 }}
                     />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+                  )}
+
+                  <Pie
+                    data={chartData}
+                    dataKey="value"
+                    nameKey="name"
+                    innerRadius="66%"
+                    outerRadius="86%"
+                    paddingAngle={hasData ? 3 : 0}
+                    stroke="none"
+                    isAnimationActive
+                    animationDuration={700}
+                    onMouseEnter={(_, index) =>
+                      hasData && setActiveIndex(index)
+                    }
+                    onMouseLeave={() => setActiveIndex(null)}
+                  >
+                    {chartData.map((slice, index) => (
+                      <Cell
+                        key={slice.name}
+                        fill={slice.color}
+                        fillOpacity={
+                          activeIndex === null || activeIndex === index
+                            ? 1
+                            : 0.4
+                        }
+                        style={{
+                          outline: "none",
+                          transition: "fill-opacity 0.2s",
+                        }}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </Box>
 
             <Stack
               sx={{

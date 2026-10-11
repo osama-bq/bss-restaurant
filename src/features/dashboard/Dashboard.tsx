@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { Box, MenuItem, Select, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  InputAdornment,
+  MenuItem,
+  Select,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useGetDashboardStatsQuery } from "../../api/dashboard.api";
 import StatCard from "./components/StatCard";
 import ErrorState from "../../components/ErrorState";
 import TableOccupancy from "./components/TableOccupancy";
 import {
   BadgeOutlined,
+  CalendarMonthOutlined,
   PaymentsOutlined,
   ReceiptLongOutlined,
   RestaurantMenuOutlined,
@@ -51,6 +60,8 @@ export default function DashboardPage() {
     data: stats,
     isLoading,
     error,
+    isFetching,
+    refetch,
   } = useGetDashboardStatsQuery({
     month,
     year,
@@ -67,12 +78,12 @@ export default function DashboardPage() {
         spacing={2}
       >
         <Stack spacing={0.5}>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+          <Typography variant="h4" sx={{ fontWeight: 700 }}>
             Dashboard
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
-            Overview for {MONTHS[Number(month) - 1]} {year}
+            Here&apos;s what&apos;s happening at your restaurant
           </Typography>
         </Stack>
 
@@ -81,9 +92,15 @@ export default function DashboardPage() {
             size="small"
             value={month}
             onChange={(event) => setMonth(event.target.value)}
+            startAdornment={
+              <InputAdornment position="start">
+                <CalendarMonthOutlined fontSize="small" />
+              </InputAdornment>
+            }
+            sx={{ minWidth: 150, bgcolor: "background.paper" }}
           >
             {MONTHS.map((name, index) => (
-              <MenuItem key={name} value={index + 1}>
+              <MenuItem key={name} value={String(index + 1)}>
                 {name}
               </MenuItem>
             ))}
@@ -93,9 +110,10 @@ export default function DashboardPage() {
             size="small"
             value={year}
             onChange={(event) => setYear(event.target.value)}
+            sx={{ minWidth: 100, bgcolor: "background.paper" }}
           >
             {YEARS.map((value) => (
-              <MenuItem key={value} value={value}>
+              <MenuItem key={value} value={String(value)}>
                 {value}
               </MenuItem>
             ))}
@@ -104,16 +122,22 @@ export default function DashboardPage() {
       </Stack>
 
       {isLoading ? (
-        <Stack spacing={3}>
-          <DashboardSkeleton />
-        </Stack>
+        <DashboardSkeleton />
       ) : error || !stats ? (
         <ErrorState
-          title="Error"
-          description="Failed to load dashboard data."
+          title="Failed to load dashboard"
+          description="We couldn't load the dashboard data. Please try again."
+          onRetry={refetch}
         />
       ) : (
-        <>
+        <Stack
+          spacing={2}
+          sx={{
+            opacity: isFetching ? 0.6 : 1,
+            transition: "opacity 0.2s",
+            pointerEvents: isFetching ? "none" : "auto",
+          }}
+        >
           <Box sx={STAT_GRID_SX}>
             <StatCard
               title="Total Orders"
@@ -154,7 +178,7 @@ export default function DashboardPage() {
               occupied={stats.occupiedTables}
             />
           </Stack>
-        </>
+        </Stack>
       )}
     </Stack>
   );
@@ -167,6 +191,17 @@ function DashboardSkeleton() {
         {Array.from({ length: 4 }).map((_, index) => (
           <StatCard key={index} title="" value="" loading />
         ))}
+      </Box>
+
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", lg: "1fr 360px" },
+          gap: 2,
+        }}
+      >
+        <Skeleton variant="rounded" height={460} sx={{ borderRadius: 3 }} />
+        <Skeleton variant="rounded" height={460} sx={{ borderRadius: 3 }} />
       </Box>
     </Stack>
   );
