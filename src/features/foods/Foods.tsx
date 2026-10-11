@@ -4,6 +4,7 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 import FoodFormDialog from "./components/FoodFormDialog";
 import FoodTable from "./components/FoodTable";
 import type { Food } from "./types";
+import { getApiErrorMessage, notify } from "../../components/Notifier";
 
 const SEARCH_DEBOUNCE_MS = 400;
 
@@ -69,9 +70,10 @@ export default function FoodsPage() {
     try {
       await deleteFood(deleteTarget.id.toString()).unwrap();
 
+      notify.success("Food deleted successfully.");
       setDeleteTarget(null);
-    } catch {
-      // Keep dialog open on failure.
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to delete food."));
     }
   };
 

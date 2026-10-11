@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { clearSession, refreshAccessToken } from "./authRefresh";
 
-const REFRESH_BEFORE_EXPIRY_MS = 60_000; // 1 minute
+const REFRESH_BEFORE_EXPIRY_MS = 300_000; // 5 minutes
 
 type JwtPayload = {
   exp?: number;

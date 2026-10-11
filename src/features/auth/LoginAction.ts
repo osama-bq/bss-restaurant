@@ -1,6 +1,7 @@
 import { redirect } from "react-router-dom";
 import { authApi } from "../../api/auth.api";
 import { store } from "../../app/store";
+import { notify } from "../../components/Notifier";
 
 export type LoginActionData = { error: string } | null;
 
@@ -41,10 +42,10 @@ export async function loginAction({
     localStorage.setItem("refreshToken", data.refreshToken);
     localStorage.setItem("refreshTokenExpiryTime", data.refreshTokenExpiryTime);
 
+    notify.success("Login successful!");
     return redirect("/");
   } catch (error) {
-    console.error("Login failed:", error);
-
+    notify.error(getErrorMessage(error));
     return { error: getErrorMessage(error) };
   }
 }

@@ -10,6 +10,7 @@ import CartDrawer from "./components/CartDrawer";
 import { useOrderCart } from "./hooks/useOrderCart";
 import type { OrderMutationPayload } from "../orders/types";
 import { useCreateOrderMutation } from "../../api/orders.api";
+import { getApiErrorMessage, notify } from "../../components/Notifier";
 
 const TABLES_PER_PAGE = 50; // fetch all
 
@@ -90,8 +91,10 @@ export default function NewOrderPage() {
       setCartOpen(false);
       setPhone("");
       clearCart();
+
+      notify.success("Order placed successfully.");
     } catch (error) {
-      console.error("Failed to place order:", error);
+      notify.error(getApiErrorMessage(error, "Failed to place order."));
     }
   };
 

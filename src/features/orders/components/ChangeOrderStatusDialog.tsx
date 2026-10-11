@@ -16,6 +16,7 @@ import { ORDER_STATUS_VALUES } from "../consts";
 import type { Order } from "../types";
 import { getStatusColor } from "../utils";
 import { useUpdateOrderStatusMutation } from "../../../api/orders.api";
+import { getApiErrorMessage, notify } from "../../../components/Notifier";
 
 type Props = {
   open: boolean;
@@ -49,9 +50,10 @@ export default function ChangeOrderStatusDialog({
         body: { status: ORDER_STATUS_VALUES[status] },
       }).unwrap();
 
+      notify.success(`Order status updated to "${status}" successfully.`);
       onClose();
-    } catch {
-      // Keep the dialog open so the user can retry.
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to update order status."));
     }
   };
 

@@ -9,6 +9,7 @@ import TableToolbar from "./components/TableToolbar";
 import type { Table } from "./types";
 import TableFormDialog from "./components/TableFormDialog";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import { getApiErrorMessage, notify } from "../../components/Notifier";
 
 const PER_PAGE = 8;
 
@@ -58,8 +59,9 @@ export default function TablesPage() {
     try {
       await deleteTable(deleteTarget.id.toString()).unwrap();
       setDeleteTarget(null);
-    } catch {
-      // Keep confirmation dialog open on failure.
+      notify.success("Table deleted successfully.");
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to delete table."));
     }
   };
 

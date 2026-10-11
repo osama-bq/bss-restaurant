@@ -20,6 +20,7 @@ import { BASE_URL } from "../../../api/baseApi";
 import type { Table, TableFormValues, TableMutationPayload } from "../types";
 
 import ImagePicker from "../../../components/ImagePicker";
+import { getApiErrorMessage, notify } from "../../../components/Notifier";
 
 type Props = {
   open: boolean;
@@ -92,9 +93,10 @@ export default function TableFormDialog({ open, mode, table, onClose }: Props) {
         await createTable(payload).unwrap();
       }
 
+      notify.success(`Table ${isEdit ? "updated" : "created"} successfully.`);
       onClose();
-    } catch {
-      // Keep the dialog open so the user doesn't lose the entered data.
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to create/update table."));
     }
   };
 

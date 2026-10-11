@@ -33,6 +33,7 @@ import {
   useGetEmployeeTablesQuery,
 } from "../../../api/employeeTables.api";
 import LoadingOverlay from "../../../components/LodingOverlay";
+import { getApiErrorMessage, notify } from "../../../components/Notifier";
 
 const ALL = 100000; // A large number to fetch all employees
 
@@ -87,16 +88,17 @@ export default function TableStaff({ tableId, employees }: Props) {
         item.table.tableId === tableId,
     );
 
-    console.log("Table ID:", tableId);
-    console.log("Employee ID:", employeeId);
-    console.log("Employee-tables relations:", employeeTables);
-    console.log("Removing employee-table relation:", relation);
-
     if (!relation) {
-      throw new Error("Employee-table relation not found");
+      notify.error("Failed to find the staff assignment relation.");
+      return;
     }
 
-    await deleteEmployeeTable(relation.employeeTableId).unwrap();
+    try {
+      await deleteEmployeeTable(relation.employeeTableId).unwrap();
+      notify.success("Staff removed successfully.");
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to remove staff."));
+    }
 
     setAnchorEl(null);
   };

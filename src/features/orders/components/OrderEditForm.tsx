@@ -23,6 +23,7 @@ import OrderDetailsFields, {
 } from "./order-edit/OrderDetailsFields";
 import OrderFoodPicker from "./order-edit/OrderFoodPicker";
 import OrderCartPanel from "./order-edit/OrderCartPanel";
+import { notify } from "../../../components/Notifier";
 
 type Props = {
   open: boolean;
@@ -89,8 +90,10 @@ function OrderEditSession({ order, onClose }: SessionProps) {
         body: payload,
       }).unwrap();
 
+      notify.success("Order updated successfully.");
       onClose();
     } catch {
+      // [SNACKBAR HERE] Order update failed. ???
       setSubmitError("Failed to update the order. Please try again.");
     }
   };

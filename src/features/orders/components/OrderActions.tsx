@@ -12,6 +12,7 @@ import {
 import ConfirmDialog from "../../../components/ConfirmDialog";
 import OrderEditForm from "./OrderEditForm";
 import ChangeOrderStatusDialog from "./ChangeOrderStatusDialog";
+import { getApiErrorMessage, notify } from "../../../components/Notifier";
 
 type Props = {
   order: Order;
@@ -31,12 +32,19 @@ export default function OrderActions({ order }: Props) {
 
   const [deleteTarget, setDeleteTarget] = useState<Order | null>(null);
 
-  const handleAdvanceStatus = () => {
+  const handleAdvanceStatus = async () => {
     if (!nextStatus) return;
-    updateOrderStatus({
-      id: order.id,
-      body: { status: ORDER_STATUS_VALUES[nextStatus] },
-    });
+    try {
+      await updateOrderStatus({
+        id: order.id,
+        body: { status: ORDER_STATUS_VALUES[nextStatus] },
+      }).unwrap();
+      notify.success(`Order status advanced to "${nextStatus}" successfully.`);
+    } catch (error) {
+      notify.error(
+        getApiErrorMessage(error, "Failed to advance order status."),
+      );
+    }
   };
 
   const handleDelete = (order: Order) => {
@@ -49,8 +57,10 @@ export default function OrderActions({ order }: Props) {
     try {
       await deleteOrder(deleteTarget.id).unwrap();
       setDeleteTarget(null);
-    } catch {
-      // Keep confirmation dialog open on failure.
+
+      notify.success("Order deleted successfully.");
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to delete order."));
     }
   };
 

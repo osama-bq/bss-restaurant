@@ -15,9 +15,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { BASE_URL } from "../../../api/baseApi";
 import type { Employee } from "../../employees/type";
+import { getApiErrorMessage, notify } from "../../../components/Notifier";
 
 type EmployeeId = Employee["id"];
 
@@ -41,12 +42,15 @@ export default function AssignStaffDialog({
   const [selected, setSelected] = useState<EmployeeId[]>([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open);
+
+  if (open !== prevOpen) {
+    setPrevOpen(open); // Sync the state
     if (open) {
       setSelected([]);
       setSearch("");
     }
-  }, [open]);
+  }
 
   const available = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -71,9 +75,10 @@ export default function AssignStaffDialog({
   const handleSubmit = async () => {
     try {
       await onAssign(selected);
+      notify.success("Staff assigned successfully.");
       onClose();
-    } catch {
-      // Keep the dialog open so the selection isn't lost.
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to assign staff."));
     }
   };
 

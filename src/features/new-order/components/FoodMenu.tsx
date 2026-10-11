@@ -13,7 +13,7 @@ import { Search, TableRestaurantOutlined } from "@mui/icons-material";
 import type { Food } from "../../foods/types";
 import type { CartItem } from "../types";
 import OrderSummary from "./OrderSummary";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   table: Table | null;
@@ -24,6 +24,8 @@ type Props = {
   onDecrease: (foodId: number) => void;
 };
 
+const PAGE_SIZE = 100; // fetch all
+
 export default function FoodMenu({
   table,
   cartItems,
@@ -33,9 +35,24 @@ export default function FoodMenu({
   onDecrease,
 }: Props) {
   const [search, setSearch] = useState("");
-  const { currentData, isLoading, error } = useGetFoodsQuery({
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const {
+    data: currentData,
+    isLoading,
+    error,
+  } = useGetFoodsQuery({
     Page: 1,
-    Per_Page: 100,
+    Per_Page: PAGE_SIZE,
+    Search: debouncedSearch || undefined,
   });
 
   const quantities = new Map(

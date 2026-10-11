@@ -7,7 +7,7 @@ export type RefreshResponse = {
 };
 
 /*
- * This is shared by BOTH:
+ * This is shared by both:
  *
  * 1. AuthSessionManager
  * 2. baseApi's 401 handler

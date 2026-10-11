@@ -5,6 +5,7 @@ import EmployeeFormDialog from "./components/EmployeeFormDialog";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { useDeleteEmployeeMutation } from "../../api/employees.api";
 import type { Employee } from "./type";
+import { getApiErrorMessage, notify } from "../../components/Notifier";
 
 const SEARCH_DEBOUNCE_MS = 400;
 
@@ -66,9 +67,10 @@ export default function EmployeesPage() {
 
     try {
       await deleteEmployee(deleteTarget.id).unwrap();
+      notify.success("Employee deleted successfully.");
       setDeleteTarget(null);
-    } catch {
-      // Keep confirmation dialog open on failure.
+    } catch (error) {
+      notify.error(getApiErrorMessage(error, "Failed to delete employee."));
     }
   };
 

@@ -27,6 +27,7 @@ import type {
 } from "../type";
 
 import ImagePicker from "../../../components/ImagePicker";
+import { getApiErrorMessage, notify } from "../../../components/Notifier";
 
 const IMAGE_BASE_URL = "https://bssrms.runasp.net/images/user/";
 
@@ -183,9 +184,17 @@ export default function EmployeeFormDialog({
         await createEmployee(payload).unwrap();
       }
 
+      notify.success(
+        `Employee ${isEdit ? "updated" : "created"} successfully.`,
+      );
       onClose();
-    } catch {
-      // Keep the dialog/form open so the user doesn't lose their input.
+    } catch (error) {
+      notify.error(
+        getApiErrorMessage(
+          error,
+          `Failed to ${isEdit ? "update" : "create"} employee.`,
+        ),
+      );
     }
   };
 

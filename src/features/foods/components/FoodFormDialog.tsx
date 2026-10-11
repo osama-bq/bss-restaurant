@@ -28,6 +28,7 @@ import type {
 } from "../types";
 
 import ImagePicker from "../../../components/ImagePicker";
+import { getApiErrorMessage, notify } from "../../../components/Notifier";
 
 const IMAGE_BASE_URL = "https://bssrms.runasp.net/images/food/";
 
@@ -132,9 +133,15 @@ export default function FoodFormDialog({ open, mode, food, onClose }: Props) {
         await createFood(payload).unwrap();
       }
 
+      notify.success(`Food ${isEdit ? "updated" : "created"} successfully.`);
       onClose();
-    } catch {
-      // Keep the form open and preserve input.
+    } catch (error) {
+      notify.error(
+        getApiErrorMessage(
+          error,
+          `Failed to ${isEdit ? "update" : "create"} food.`,
+        ),
+      );
     }
   };
 
