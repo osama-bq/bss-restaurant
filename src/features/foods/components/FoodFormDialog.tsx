@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   useCreateFoodMutation,
@@ -79,6 +79,7 @@ export default function FoodFormDialog({ open, mode, food, onClose }: Props) {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     setValue,
@@ -253,16 +254,24 @@ export default function FoodFormDialog({ open, mode, food, onClose }: Props) {
             </Grid>
 
             <Grid size={{ xs: 12, sm: 4 }}>
-              <TextField
-                select
-                fullWidth
-                label="Discount type"
-                {...register("discountType")}
-              >
-                <MenuItem value="None">None</MenuItem>
-                <MenuItem value="Percentage">Percentage</MenuItem>
-                <MenuItem value="Flat">Flat</MenuItem>
-              </TextField>
+              <Controller
+                control={control}
+                name="discountType"
+                render={({ field, fieldState }) => (
+                  <TextField
+                    select
+                    fullWidth
+                    label="Discount type"
+                    {...field}
+                    error={!!fieldState.error}
+                    helperText={fieldState.error?.message}
+                  >
+                    <MenuItem value="None">None</MenuItem>
+                    <MenuItem value="Percentage">Percentage</MenuItem>
+                    <MenuItem value="Flat">Flat</MenuItem>
+                  </TextField>
+                )}
+              />
             </Grid>
 
             <Grid size={{ xs: 12, sm: 4 }}>
