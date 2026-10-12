@@ -203,7 +203,11 @@ export default function EmployeeTable({
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             Employees
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ mt: 0.25, display: { xs: "none", sm: "block" } }}
+          >
             Manage your restaurant employees
           </Typography>
         </Box>
@@ -217,7 +221,7 @@ export default function EmployeeTable({
           }}
           onClick={onAdd}
         >
-          Add Employee
+          <Typography noWrap>Add Employee</Typography>
         </Button>
       </Stack>
 

@@ -34,5 +34,16 @@ export const theme = createTheme({
         variant: "outlined",
       },
     },
+
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          maxWidth: 200,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        },
+      },
+    },
   },
 });

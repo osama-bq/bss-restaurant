@@ -2,13 +2,17 @@ import {
   Avatar,
   IconButton,
   Link,
+  Menu,
+  MenuItem,
   Stack,
   TableCell,
   TableRow,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import { DeleteOutlined, EditOutlined } from "@mui/icons-material";
+import { DeleteOutlined, EditOutlined, MoreHoriz } from "@mui/icons-material";
 import type { Employee } from "../type";
+import { useState } from "react";
 
 type Props = {
   employee: Employee;
@@ -22,6 +26,11 @@ export default function EmployeeTableRow({
   onDelete,
 }: Props) {
   const { user } = employee;
+
+  const isLg = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const closeMenu = () => setAnchorEl(null);
 
   const joined = new Date(employee.joinDate).toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -42,7 +51,7 @@ export default function EmployeeTableRow({
           </Avatar>
 
           <div>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" noWrap>
               {user.fullName}
             </Typography>
             {user.userName && (
@@ -67,7 +76,7 @@ export default function EmployeeTableRow({
           underline="hover"
           color="text.secondary"
         >
-          {user.email}
+          <Typography noWrap>{user.email}</Typography>
         </Link>
       </TableCell>
 
@@ -83,7 +92,7 @@ export default function EmployeeTableRow({
       </TableCell>
 
       <TableCell sx={{ px: 2, py: 1.25 }}>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" noWrap>
           {joined}
         </Typography>
       </TableCell>
@@ -95,35 +104,85 @@ export default function EmployeeTableRow({
       </TableCell>
 
       <TableCell align="right" sx={{ px: 2, py: 1.25 }}>
-        <IconButton
-          size="small"
-          aria-label="Employee edit"
-          onClick={() => onEdit(employee)}
-          sx={{
-            border: "1px solid #EEF0F3",
-            borderRadius: 1,
-            width: 36,
-            height: 36,
-          }}
-        >
-          <EditOutlined fontSize="small" />
-        </IconButton>
+        {isLg ? (
+          <>
+            <IconButton
+              size="small"
+              aria-label="Table actions"
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                borderRadius: 1,
+                width: 36,
+                height: 32,
+              }}
+            >
+              <MoreHoriz fontSize="small" />
+            </IconButton>
 
-        <IconButton
-          size="small"
-          aria-label="Employee delete"
-          onClick={() => onDelete(employee)}
-          sx={{
-            border: "1px solid #EEF0F3",
-            borderRadius: 1,
-            width: 36,
-            height: 36,
-            ml: 1,
-            color: "error.main",
-          }}
-        >
-          <DeleteOutlined fontSize="small" />
-        </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={closeMenu}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <MenuItem
+                onClick={() => {
+                  closeMenu();
+                  onEdit(employee);
+                }}
+              >
+                <EditOutlined fontSize="small" sx={{ mr: 1 }} />
+                Edit
+              </MenuItem>
+
+              <MenuItem
+                sx={{ color: "error.main" }}
+                onClick={() => {
+                  closeMenu();
+                  onDelete(employee);
+                }}
+              >
+                <DeleteOutlined fontSize="small" sx={{ mr: 1 }} />
+                Delete
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <>
+            <IconButton
+              size="small"
+              aria-label="Employee edit"
+              onClick={() => onEdit(employee)}
+              sx={{
+                border: "1px solid #EEF0F3",
+                borderRadius: 1,
+                width: 36,
+                height: 36,
+              }}
+            >
+              <EditOutlined fontSize="small" />
+            </IconButton>
+
+            <IconButton
+              size="small"
+              aria-label="Employee delete"
+              onClick={() => onDelete(employee)}
+              sx={{
+                border: "1px solid #EEF0F3",
+                borderRadius: 1,
+                width: 36,
+                height: 36,
+                ml: 1,
+                color: "error.main",
+              }}
+            >
+              <DeleteOutlined fontSize="small" />
+            </IconButton>
+          </>
+        )}
       </TableCell>
     </TableRow>
   );

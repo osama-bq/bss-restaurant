@@ -52,9 +52,10 @@ type Props = {
 
 export default function DashboardSidebar({ open }: Props) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  if (isMobile) {
+  if (isTablet) {
     return (
       <Paper
         elevation={3}
@@ -72,12 +73,15 @@ export default function DashboardSidebar({ open }: Props) {
               key={path}
               component={NavLink}
               to={path}
-              label={title}
+              label={isMobile ? undefined : title}
               icon={<Icon />}
               sx={{
                 minWidth: 0,
                 "&.active": {
                   color: "primary.main",
+                },
+                "& .MuiBottomNavigationAction-label": {
+                  mt: 0.5,
                 },
               }}
             />
