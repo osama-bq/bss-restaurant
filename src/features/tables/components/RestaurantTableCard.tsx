@@ -39,7 +39,8 @@ export default function RestaurantTableCard({
 
   return (
     <Card
-      variant="outlined"
+      variant="elevation"
+      elevation={3}
       sx={{
         display: "flex",
         flexDirection: "column",

@@ -34,9 +34,9 @@ export default function TableToolbar({
           Tables
         </Typography>
 
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
           Manage restaurant tables and assigned staff
-          {total > 0 && ` · ${total} tables`}
+          {total > 0 && ` (${total} tables)`}
         </Typography>
       </div>
 

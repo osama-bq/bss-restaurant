@@ -39,7 +39,7 @@ export default function TableBoard({
         }}
       >
         {Array.from({ length: 8 }).map((_, index) => (
-          <Card key={index} variant="outlined">
+          <Card key={index} variant="elevation" elevation={3}>
             <Skeleton variant="rectangular" height={140} />
             <Box sx={{ p: 2 }}>
               <Skeleton width="60%" />
@@ -77,7 +77,7 @@ export default function TableBoard({
             lg: "repeat(3, 1fr)",
             xl: "repeat(4, 1fr)",
           },
-          gap: 2,
+          gap: 3,
         }}
       >
         {tables.map((table) => (
